@@ -1,0 +1,87 @@
+
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.home-paszamine {
+    font-family: 'Itim', cursive;
+    width: 100vw;
+    height: 100vh;
+    background-image: url(../images/home.png);
+    background-position: center;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.menudehoy {
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 30px;
+    text-align: center;
+    text-transform: capitalize;
+    color: #FFFFFF;
+    margin-top: 60px;
+}
+
+.search-bcg {
+    width: 80vw;
+    height: 35px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(2px);
+    border-radius: 9px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: 17px;
+}
+.search-bcg input {
+    height: 90%;
+    width: 80%;
+    padding-left: 10px;
+    background-color: transparent;
+    border: 0;
+    outline: none;
+    color: #FFFFFF;
+    font-family: 'Itim', cursive;
+    font-size: 15px;
+}
+.search-bcg input::placeholder {
+    color: #FFFFFF;
+}
+
+.search-bcg span {
+    color: #FFFFFF;
+}
+
+.titles {
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 30px;
+    text-align: center;
+    text-transform: capitalize;
+    color: #FFFFFF;
+    margin-top: 10px;
+}
+
+.recetas-bcg {
+    width: 95%;
+    height: 100px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    overflow-x: auto;
+}
+.recetas-bcg::-webkit-scrollbar {
+    width: 0;
+}
+
+.receta-bcg {
+    min-width: 100px;
+    height: 95%;
+    background-color: aliceblue;
+    margin-left: 10px;
+}
