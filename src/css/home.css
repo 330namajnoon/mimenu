@@ -37,6 +37,7 @@
     align-items: center;
     justify-content: center;
     margin-top: 17px;
+    margin-bottom: 20px;
 }
 .search-bcg input {
     height: 90%;
@@ -64,7 +65,8 @@
     text-align: center;
     text-transform: capitalize;
     color: #FFFFFF;
-    margin-top: 10px;
+    margin-bottom: 5px;
+    
 }
 
 .recetas-bcg {
@@ -74,14 +76,21 @@
     flex-direction: row;
     align-items: center;
     overflow-x: auto;
+    transition: all 10s ease-in-out;
+    
 }
 .recetas-bcg::-webkit-scrollbar {
     width: 0;
+    transition: all 10s ease-in-out;
 }
 
 .receta-bcg {
-    min-width: 100px;
-    height: 95%;
+    min-width: 95px;
+    min-height: 95%;
     background-color: aliceblue;
-    margin-left: 10px;
+    margin: 5px;
+    
+    background-size: cover;
+    border-radius: 10px;
+    box-shadow: 0px 0px  1px  1px rgba(77, 77, 231, 0.438);
 }
