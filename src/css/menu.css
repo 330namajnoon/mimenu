@@ -11,6 +11,29 @@
     position: absolute;
     background: rgba(255, 255, 255, 0.15);
     background-blend-mode: luminosity;
-   
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-around;
     
+    background-blend-mode: luminosity;
+    backdrop-filter: blur(9.5px);
+    box-shadow: -.5px -.5px 1px rgb(0, 111, 158);
+}
+
+.m-o-paszamine {
+    width: auto;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    transition: all .3s;
+    border-radius: 100px;
+}
+
+#m-o-icon {
+    width: 20px;
+    height: 20px;
+    color: aliceblue;
+    margin-right: 3px;
+    margin-bottom: 3px;
 }
