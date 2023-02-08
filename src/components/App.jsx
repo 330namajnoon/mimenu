@@ -2,7 +2,7 @@ import { useState } from "react";
 import Openai from "./openai";
 import Sigin from "./pages/Sigin";
 import Login from "./pages/Login";
-import Home from "./pages/Home";
+import Home from "./pages/home/Home";
 import Receta from "./pages/Receta";
 import List from "./pages/List";
 import Perfil from "./pages/Perfil";
@@ -36,19 +36,8 @@ function App() {
       tag: <Perfil/>
     }, 
   }
-  function entrar() {
-      let l1 = localStorage.getItem("sigin");
-      let l2 = localStorage.getItem("login");
-      let s1 = sessionStorage.getItem("sigin");
-      let s2 = sessionStorage.getItem("login");
-
-      if(l1 || s1 && l2 || s2) {
-        return "login";
-      }else {
-        return "sigin";
-      }
-  }
-  const [page,setPage] = useState(entrar() == "sigin" || entrar() == "login" ? pages[entrar()] : pages.home);
+  
+  const [page,setPage] = useState(pages.home);
   return (
     <AppContext.Provider value={{page,pageChenge}} >
       <div className="App">
