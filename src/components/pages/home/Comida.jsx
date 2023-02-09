@@ -1,9 +1,9 @@
 import "../../../css/home.css";
 
-function Comida({image}) {
+function Comida({receta}) {
     return(
-        <div style={{backgroundImage: `url(./images/${image})`}} className="receta-bcg">
-
+        <div style={{backgroundImage: `url(./images/${receta.comida.image})`}} className="receta-bcg">
+            <h1 className="nombredecomida">{receta.comida.name}</h1>
         </div>
     );
 }
