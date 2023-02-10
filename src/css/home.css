@@ -97,16 +97,38 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
 }
 .nombredecomida {
     font-size: 10px;
-    color: #FFFFFF;
+    color: rgb(16, 16, 115);
     width: 100%;
     padding-top: 5px;
     padding-bottom: 5px;
     text-align: center;
-    background-color: rgba(164, 164, 240, 0.336);
+    background-color: rgba(213, 220, 255, 0.766);
+    border-radius: 0 0 10px 10px;
+}
+
+.visits-likes {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-radius: 10px 10px 0 0;
+    padding-top: 2px;
+    background-color: rgba(213, 220, 255, 0.766);
+}
+.visits-likes span{
+    color: rgb(16, 16, 115);
+    font-size: 10px;
+    margin-left: 7px;
+}
+.visits-likes h6 {
+    font-size: 8px;
+    color: rgb(16, 16, 115);
+    margin-left: 1px;
+    margin-bottom: 3px;
 }
 
 #d {
