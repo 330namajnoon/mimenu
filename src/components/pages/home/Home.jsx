@@ -15,7 +15,7 @@ function Home() {
         this.comida = {
             id: "adfg58",
             name: name,
-            material: [15,18,20,25],
+            materiales: [15,18,20,25,100,26,38],
             receta: "ilk once patateslerimizi pisirir ve ondansonra iyice ezmemiz lazim ondansonra 3 tane yumurtamizi eklememiz lazim ve karistirip yarim saaat firinda 200derece ile pisircez ,afiyet olsun",
             image: image,
             visits: 10,
@@ -23,19 +23,17 @@ function Home() {
         }
     }
 
-    const [vistaR,setVistaR] = useState({
-        vista: false,
-        receta: {}
-    });
+    const [recetaSeleccionada,setRecetaS] = useState(new Receta("a","a"));
+    const [vistaR,setVistaR] = useState(false);
     
     
     const sdiComidas = [new Receta("Tortia de patata","comida1.jpg"),new Receta("Tortia de patata","comida2.jpg"),new Receta("Tortia de patata","comida3.jpg"),new Receta("Tortia de patata","comida4.jpg")];
     const misComidas = [new Receta("Tortia de patata","comida1.jpg"),new Receta("Tortia de patata","comida2.jpg"),new Receta("Tortia de patata","comida3.jpg"),new Receta("Tortia de patata","comida4.jpg")];
     const comidasPublicadas = [new Receta("Tortia de patata","comida1.jpg"),new Receta("Tortia de patata","comida2.jpg"),new Receta("Tortia de patata","comida3.jpg"),new Receta("Tortia de patata","comida4.jpg")];
     return(
-        <HomeContext.Provider value={{visitarReceta,vistaR}}>
+        <HomeContext.Provider value={{visitarReceta,recetaSeleccionada}}>
             <div  className="home-paszamine">
-                {vistaR.vista === true ? <VistaDereceta/> : null}
+                {vistaR === true ? <VistaDereceta datos={recetaSeleccionada}/> : null}
                 <h1 className="menudehoy">Menu de hoy</h1>
                 <Serch/>
                 {sdiComidas.length > 0 ? <Comidas comidas={sdiComidas} titel="Sugestiones de ingredientes"/> : null}
@@ -46,12 +44,9 @@ function Home() {
     );
 
     function visitarReceta(durum,data = {}) {
-        let newv = JSON.parse(JSON.stringify(vistaR));
-        newv.vista = durum;
-        newv.receta = data;
-        console.log(vistaR)
-        setVistaR(newv);
-        console.log(vistaR)
+        setRecetaS(JSON.parse(JSON.stringify(data)));
+        setVistaR(durum);
+       
     }
 }
 
