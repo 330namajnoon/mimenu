@@ -28,17 +28,32 @@ const uploadF = multer(multer.diskStorage({
         cd(null,file.originalname);
     }
 }));
-app.post("/dascargar-materiales",uploadD.none(),(req,res)=>{
+app.post("/descargar-materiales",uploadD.none(),(req,res)=>{
     fs.readFile("./database/materiales.json",(err,data)=> {
-        if(err) throw err;
-        fs.readFile("./database/users.json",(err1,data1)=> {
-            if(err) throw err1;
-            let datos = {
-                materiales: JSON.parse(data.toString()),
-                mydata: miLibreria.buscarMisDatos(JSON.parse(data1.toString()),req.body.id)
-            }
-            res.send(JSON.stringify(datos));
-        })
+        if(err) {
+            res.send('error!')
+        }else {
+            res.send(data.toString());
+            
+        }
+    })
+})
+app.post("/descargar-datos-usuarios",uploadD.none(),(req,res)=> {
+    fs.readFile("./database/users.json",(err,data)=> {
+        if(err) {
+            res.send("error!");
+        }else {
+            res.send(JSON.stringify(miLibreria.buscarMisDatos(JSON.parse(data.toString()),req.body.id)));
+        }
+    })
+})
+app.post("/descargar-recetas",uploadD.none(),(req,res)=> {
+    fs.readFile("./database/recetas.json",(err,data)=> {
+        if(err) {
+            res.send("error!");
+        }else {
+            res.send(data.toString());
+        }
     })
 })
 
@@ -58,85 +73,85 @@ app.get("/sigin",(req,res)=> {
 server.listen(port,()=> {
     console.log(`server is op un port ${port}!`);
 
-    fs.readFile("./database/recetas.json",(err,data)=> {
+    // fs.readFile("./database/recetas.json",(err,data)=> {
       
-        fs.readFile("./database/materiales.json",(err,mat)=>{
-            let materiales = JSON.parse(mat.toString());
+    //     fs.readFile("./database/materiales.json",(err,mat)=>{
+    //         let materiales = JSON.parse(mat.toString());
 
-            let newMateriales  = [
-                { id: 1, name: "Quinoa" },
-                { id: 2, name: "Pimiento rojo" },
-                { id: 3, name: "Pimiento verde" },
-                { id: 4, name: "Cebolla morada" },
-                { id: 5, name: "Pepino" },
-                { id: 6, name: "Zanahoria" },
-                { id: 7, name: "Tomate" },
-                { id: 8, name: "Aceite de oliva" },
-                { id: 9, name: "Vinagre balsámico" },
-                { id: 10, name: "Sal" },
-                { id: 11, name: "Pimienta negra" }
-                ]
-            newMateriales.forEach(e => {
-                let d = false;
-                materiales.forEach(ee => {
-                    if(ee.name === e.name)  d = true;
-                })
-                if(d === false ) {
-                    e.id = materiales.length+1;
-                    materiales.push(e);
-                }    
-            })
+    //         let newMateriales  = [
+    //             { id: 1, name: "Camarones pelados" },
+    //             { id: 2, name: "Arroz" },
+    //             { id: 3, name: "Champiñones frescos" },
+    //             { id: 4, name: "Cebolla" },
+    //             { id: 5, name: "Ajo" },
+    //             { id: 6, name: "Aceite de oliva" },
+    //             { id: 7, name: "Caldo de pescado" },
+    //             { id: 8, name: "Vino blanco" },
+    //             { id: 9, name: "Perejil fresco" },
+    //             { id: 10, name: "Sal" },
+    //             { id: 11, name: "Pimienta negra" }
+    //             ]
+    //         newMateriales.forEach(e => {
+    //             let d = false;
+    //             materiales.forEach(ee => {
+    //                 if(ee.name === e.name)  d = true;
+    //             })
+    //             if(d === false ) {
+    //                 e.id = materiales.length+1;
+    //                 materiales.push(e);
+    //             }    
+    //         })
     
-            fs.writeFile("./database/materiales.json",JSON.stringify(materiales),(err)=> {
-                function buscarm(mismtr) {
-                    let matriales = [];
-                    mismtr.forEach(e => {
-                        materiales.forEach(ee => {
-                            if(ee.name === e.name) matriales.push(ee.id);
-                        })
-                    });
-                    return matriales;
-                }
-                if(err) throw err;
-                let recetas = JSON.parse(data.toString());
-                let newreceta  = {
-                    perfil: {
-                    username: "Sina Majnoon",
-                    id: "8bcefpjlgj",
-                    image: "sina.png"
-                    },
-                    comida: {
-                        id: "receta10",
-                        name: "Ensalada de quinoa y vegetales",
-                        materiales: buscarm([
-                        { id: 1, name: "Quinoa" },
-                        { id: 2, name: "Pimiento rojo" },
-                        { id: 3, name: "Pimiento verde" },
-                        { id: 4, name: "Cebolla morada" },
-                        { id: 5, name: "Pepino" },
-                        { id: 6, name: "Zanahoria" },
-                        { id: 7, name: "Tomate" },
-                        { id: 8, name: "Aceite de oliva" },
-                        { id: 9, name: "Vinagre balsámico" },
-                        { id: 10, name: "Sal" },
-                        { id: 11, name: "Pimienta negra" }
-                        ]),
-                        receta: "Enjuague la quinoa y cocine en agua con sal durante unos 15 minutos hasta que esté tierna y suave. Escúrrala bien y déjela enfriar. Mientras tanto, pique los pimientos, la cebolla, el pepino, la zanahoria y el tomate en cubos pequeños. En un tazón grande, combine la quinoa enfriada, los vegetales picados y revuelva bien. Agregue el aceite de oliva, el vinagre balsámico, la sal y la pimienta negra y revuelva bien. Sirva inmediatamente o enfríe en el refrigerador hasta que esté listo para servir.",
-                        image: "ensalada_quinoa_vegetales.jpg",
-                        visits: 90,
-                        likes: 150
-                        }
-                    }
-                recetas.push(newreceta);
+    //         fs.writeFile("./database/materiales.json",JSON.stringify(materiales),(err)=> {
+    //             function buscarm(mismtr) {
+    //                 let matriales = [];
+    //                 mismtr.forEach(e => {
+    //                     materiales.forEach(ee => {
+    //                         if(ee.name === e.name) matriales.push(ee.id);
+    //                     })
+    //                 });
+    //                 return matriales;
+    //             }
+    //             if(err) throw err;
+    //             let recetas = JSON.parse(data.toString());
+    //             let newreceta  = {
+    //                 perfil: {
+    //                 username: "Sina Majnoon",
+    //                 id: "8bcefpjlgj",
+    //                 image: "sina.png"
+    //                 },
+    //                 comida: {
+    //                     id: "receta12",
+    //                     name: "Arroz con camarones y champiñones",
+    //                     materiales: buscarm([
+    //                     { id: 1, name: "Camarones pelados" },
+    //                     { id: 2, name: "Arroz" },
+    //                     { id: 3, name: "Champiñones frescos" },
+    //                     { id: 4, name: "Cebolla" },
+    //                     { id: 5, name: "Ajo" },
+    //                     { id: 6, name: "Aceite de oliva" },
+    //                     { id: 7, name: "Caldo de pescado" },
+    //                     { id: 8, name: "Vino blanco" },
+    //                     { id: 9, name: "Perejil fresco" },
+    //                     { id: 10, name: "Sal" },
+    //                     { id: 11, name: "Pimienta negra" }
+    //                     ]),
+    //                     receta: "Cocine el arroz en caldo de pescado siguiendo las instrucciones del paquete. Mientras tanto, caliente una sartén grande a fuego medio-alto y agregue el aceite de oliva. Agregue la cebolla picada y cocine durante 2-3 minutos, o hasta que esté suave. Agregue el ajo picado y cocine por otros 30 segundos. Agregue los champiñones y cocine durante unos 5 minutos, o hasta que estén dorados. Agregue los camarones y cocine durante unos 2-3 minutos, o hasta que estén cocidos. Agregue el vino blanco y cocine durante unos 2-3 minutos, o hasta que se reduzca a la mitad. Agregue el arroz cocido y el perejil fresco picado y revuelva bien. Sazone con sal y pimienta al gusto. Sirva caliente y disfrute.",
+    //                     image: "arroz_camarones_champinones.png",
+    //                     visits: 78,
+    //                     likes: 91
+    //                     }
+    //                 }
+    //             recetas.push(newreceta);
         
-                fs.writeFile("./database/recetas.json",JSON.stringify(recetas),(err)=> {
+    //             fs.writeFile("./database/recetas.json",JSON.stringify(recetas),(err)=> {
             
-                })
-            })
+    //             })
+    //         })
            
-        })
+    //     })
        
-    })    
+    // })    
 
     // fs.readFile("./database/materiales.json",(err,data)=> {
     //     if(err) throw err;
