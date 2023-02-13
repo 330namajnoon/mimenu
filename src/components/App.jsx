@@ -6,13 +6,15 @@ import Home from "./pages/home/Home";
 import Receta from "./pages/Receta";
 import List from "./pages/List";
 import Perfil from "./pages/Perfil";
-import {Datos,httpRequest} from "../librerias";
+import {Datos} from "../librerias";
 import Menu from "./menu/Menu";
 import AppContext from "../contexts/app";
 import "../css/app.css";
+import axios from "axios";
 
 function App() {
-  const [datos,setData] = useState(new Datos());
+ 
+  const [datos,setDatos] = useState(new Datos());
   const pages = {
     sigin: {
       name: "sigin",
@@ -24,7 +26,7 @@ function App() {
     },
     home: {
       name: "home",
-      tag: <Home/>
+      tag: <Home datos={datos}/>
     },
     receta: {
       name: "receta",
@@ -39,69 +41,57 @@ function App() {
       tag: <Perfil/>
     }, 
   }
+  async function httpRequest(method,url,data = {id:""}) {
+    const headers = {
+    'Content-Type': 'application/json'
+    };
+    const respuest = await axios({
+      method,
+      url,
 
-  function descargarMateriales() {
-    let http = new XMLHttpRequest();
-    http.open("POST","http://localhost:4000/descargar-materiales",true);
-    http.onreadystatechange = function() {
-        if(http.status === 200 && http.readyState === 4) {
-            
-            datos.materiales = JSON.parse(http.responseText);
+      data
+    })
+    
+    return respuest.data;
+  }
 
-        }
-    }
-    http.send();
-  }
-  function descargarDatosUsuarios() {
-    let formdata = new FormData();
-    formdata.append("id",JSON.parse(localStorage.getItem("userData")).id);
-    let http = new XMLHttpRequest();
-    http.open("POST","http://localhost:4000/descargar-datos-usuarios",true);
-    http.onreadystatechange = function() {
-        if(http.status === 200 && http.readyState === 4) {
-            datos.mydata = JSON.parse(http.responseText);
-           
-        }
-    }
-    http.send(formdata);
-  }
-  function descargarRecetas() {
-    let http = new XMLHttpRequest();
-    http.open("POST","http://localhost:4000/descargar-recetas",true);
-    http.onreadystatechange = function() {
-        if(http.status === 200 && http.readyState === 4) {
-          datos.recetas = JSON.parse(http.responseText);
-        }
-    }
-    http.send();
+  function like(myid,id,method) {
+      httpRequest("post","http://localhost:4000/like",{myid:myid,id:id,method:method}).then((r)=>{
+        let newdatos = new Datos();
+        newdatos.materiales = datos.materiales;
+        newdatos.mydata = r.mydata ? r.mydata : datos.mydata;
+        newdatos.recetas = r.recetas;
+        setDatos(newdatos);
+      })
   }
   
- 
-
   useEffect(()=> {
-      descargarMateriales(); 
-      descargarDatosUsuarios();
-      descargarRecetas();
-      let timer = setInterval(()=> {
-        if(datos.materiales.length > 0 && datos.recetas.length > 0 && datos.mydata !== false) {
-          let newdata = JSON.parse(JSON.stringify(datos));
-          setData(newdata);
-          console.log(newdata);
-          clearInterval(timer);
-        }
-      },100);
-     
-      // descargarDatosUsuarios();
-      // descargarRecetas();
+      httpRequest("post","http://localhost:4000/descargar-materiales",{id:"sina"}).then((r )=>{
+          datos.materiales = r;
+          httpRequest("post","http://localhost:4000/descargar-datos-usuarios",{id:JSON.parse(localStorage.getItem("userData")).id}).then((r)=>{
+              datos.mydata = r;
+              httpRequest("post","http://localhost:4000/descargar-recetas",{id:"sina"}).then((r)=>{
+                  let newdatos = new Datos();
+                  newdatos.materiales = datos.materiales;
+                  newdatos.mydata = datos.mydata;
+                  newdatos.recetas = r;
+                  setDatos(newdatos);
+            
+              })
+          })
+      })
+    
   },[]);
   
   const [page,setPage] = useState(pages.home);
   return (
-    <AppContext.Provider value={{page,pageChenge,datos}} >
+    <AppContext.Provider value={{page,pageChenge,datos,like}} >
       <div className="App">
         {/* <Openai/> */}
-        {console.log(datos)}
-        {page.tag}
+  
+        {page.name === "home" ? <Home datos={datos} /> : null }
+        {/* {page.tag} */}
+       
         <Menu/>
       </div>
     </AppContext.Provider>

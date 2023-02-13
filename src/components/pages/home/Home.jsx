@@ -6,7 +6,7 @@ import Comidas from "./Comidas";
 import VistaDereceta from "./vistadereceta/VistaDereceta";
 import HomeContext from "../../../contexts/homeContext";
 import AppContext from "../../../contexts/app";
-function Home() {
+function Home({datos}) {
     function Receta(name,image) {
         this.perfil = {
             username: "Sina",
@@ -28,18 +28,19 @@ function Home() {
     const [vistaR,setVistaR] = useState(false);
     
     
-    const sdiComidas = appContext.datos.recetas;
-    const misComidas = [new Receta("Tortia de patata","comida1.jpg"),new Receta("Tortia de patata","comida2.jpg"),new Receta("Tortia de patata","comida3.jpg"),new Receta("Tortia de patata","comida4.jpg")];
-    const comidasPublicadas = [new Receta("Tortia de patata","comida1.jpg"),new Receta("Tortia de patata","comida2.jpg"),new Receta("Tortia de patata","comida3.jpg"),new Receta("Tortia de patata","comida4.jpg")];
+    const sdiComidas = datos.recetas;
+    const misComidas = datos.recetas;
+    const comidasPublicadas = datos.recetas;
     return(
         <HomeContext.Provider value={{visitarReceta,recetaSeleccionada}}>
             <div  className="home-paszamine">
+                
                 {vistaR === true ? <VistaDereceta datos={recetaSeleccionada}/> : null}
                 <h1 className="menudehoy">Menu de hoy</h1>
                 <Serch/>
-                {sdiComidas.length > 0 ? <Comidas comidas={sdiComidas} titel="Sugestiones de ingredientes"/> : null}
-                {misComidas.length > 0 ? <Comidas comidas={misComidas} titel="Mis comidas"/> : null}
-                {comidasPublicadas.length > 0 ? <Comidas comidas={comidasPublicadas} titel="Comidas compartidas"/> : null}
+                {sdiComidas.length > 0 ? <Comidas comidas={datos.sugestionesIngredientes()} titel="Sugestiones de ingredientes"/> : null}
+                {misComidas.length > 0 ? <Comidas comidas={datos.recetas} titel="Mis comidas"/> : null}
+                {comidasPublicadas.length > 0 ? <Comidas comidas={datos.recetas} titel="Comidas compartidas"/> : null}
             </div>
         </HomeContext.Provider>
     );
