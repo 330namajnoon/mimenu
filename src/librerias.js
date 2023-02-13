@@ -2,7 +2,8 @@
 
 function Datos() {
     this.materiales = [];
-    this.mydata = [];
+    this.mydata = false;
+    this.recetas = [];
 }
 function buscarMisDatos(users = [],id) {
     let mydata;
@@ -58,5 +59,19 @@ function Users(id,username,password,image) {
     this.ultimasComidas = [];
 }
 
+async function httpRequest(method = "post",url = "/",datos = [{name:"",value:""}]) {
+    let dataform = new FormData();
+    datos.forEach(e => {
+        dataform.append(e.name,e.value);
+    })
+    let http = new XMLHttpRequest();
+    http.open(method,url,true);
+    http.onreadystatechange = function() {
+        if(http.status == 200 && http.readyState == 4) {
+            return http.responseText;
+        }
+    }
+    http.send(dataform);
+}
 
-module.exports = {Datos,crearId,Users,buscarMisDatos};
+module.exports = {Datos,crearId,Users,buscarMisDatos,httpRequest};

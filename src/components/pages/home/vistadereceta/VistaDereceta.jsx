@@ -14,6 +14,7 @@ function VistaDereceta({datos}) {
                 <h1>{datos.perfil.username}</h1>
            </div>
            <div className="materiales-bcg">
+                {console.log(appContext.datos)}
                 {appContext.datos.buscarMateriales(datos.comida.materiales).map(e => (
                     <div className="v-material-bcg">{e.name}</div>
                 ))}

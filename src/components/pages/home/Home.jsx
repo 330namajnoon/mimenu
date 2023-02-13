@@ -1,10 +1,11 @@
 
 import "../../../css/home.css";
-import { useState } from "react";
+import { useState,useContext} from "react";
 import Serch from "./Serch";
 import Comidas from "./Comidas";
 import VistaDereceta from "./vistadereceta/VistaDereceta";
-import HomeContext from "../../../contexts/homeContext"
+import HomeContext from "../../../contexts/homeContext";
+import AppContext from "../../../contexts/app";
 function Home() {
     function Receta(name,image) {
         this.perfil = {
@@ -22,12 +23,12 @@ function Home() {
             likes: 5,
         }
     }
-
+    const appContext = useContext(AppContext);
     const [recetaSeleccionada,setRecetaS] = useState(new Receta("a","a"));
     const [vistaR,setVistaR] = useState(false);
     
     
-    const sdiComidas = [new Receta("Tortia de patata","comida1.jpg"),new Receta("Tortia de patata","comida2.jpg"),new Receta("Tortia de patata","comida3.jpg"),new Receta("Tortia de patata","comida4.jpg")];
+    const sdiComidas = appContext.datos.recetas;
     const misComidas = [new Receta("Tortia de patata","comida1.jpg"),new Receta("Tortia de patata","comida2.jpg"),new Receta("Tortia de patata","comida3.jpg"),new Receta("Tortia de patata","comida4.jpg")];
     const comidasPublicadas = [new Receta("Tortia de patata","comida1.jpg"),new Receta("Tortia de patata","comida2.jpg"),new Receta("Tortia de patata","comida3.jpg"),new Receta("Tortia de patata","comida4.jpg")];
     return(
