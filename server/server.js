@@ -9,6 +9,9 @@ const pdp = paht.join(__dirname,"./database");
 const port = process.env.PORT || 4000;
 const cors = require("cors");
 const app = express();
+const bodyParser = require('body-parser');
+
+app.use(bodyParser.json());
 // app.use(express.static(pdp));
 app.use(cors())
 const server = http.createServer(app);
@@ -18,6 +21,7 @@ const io = new Server(server,{
     }
 });
 const fs = require("fs");
+const { json } = require("express");
 
 const uploadD = multer();
 const uploadF = multer(multer.diskStorage({
@@ -38,11 +42,12 @@ app.post("/descargar-materiales",uploadD.none(),(req,res)=>{
         }
     })
 })
-app.post("/descargar-datos-usuarios",uploadD.none(),(req,res)=> {
+app.post("/descargar-datos-usuarios",(req,res)=> {
     fs.readFile("./database/users.json",(err,data)=> {
         if(err) {
             res.send("error!");
         }else {
+    
             res.send(JSON.stringify(miLibreria.buscarMisDatos(JSON.parse(data.toString()),req.body.id)));
         }
     })
@@ -54,6 +59,45 @@ app.post("/descargar-recetas",uploadD.none(),(req,res)=> {
         }else {
             res.send(data.toString());
         }
+    })
+})
+
+app.post("/like",(req,res)=> {
+    fs.readFile("./database/recetas.json",(err,data)=> {
+        if(err) throw err;
+        let {myid,id,method} = req.body;
+        let recetas = JSON.parse(data.toString());
+
+        recetas.forEach(e => {
+            
+            if(e.comida.id === id) {
+                if(method === "likes") {
+                    e.comida[method].push(myid);
+                    fs.readFile("./database/users.json",(err,us) => {
+                        let users = JSON.parse(us.toString());
+                        users.forEach(e => {
+                            if(e.id === myid) e.ultimasComidas.push(id);
+                            if(e.ultimasComidas.length >= recetas.length) {
+                                let newUlc = [];
+                                for (let index = 0; index < e.ultimasComidas.length; index++) {
+                                    if(index > 0) newUlc.push(e.ultimasComidas[index]);
+                                }
+                                e.ultimasComidas = newUlc;
+                            }
+                        })
+                        fs.writeFile("./database/users.json",JSON.stringify(users),(err)=> {
+                            res.send(JSON.stringify({recetas:recetas,mydata: miLibreria.buscarMisDatos(users,myid)}));
+                        })
+                    })
+                }else {
+                    e.comida[method].push(myid);
+                    res.send(JSON.stringify({recetas:recetas,mydata:false}));
+                }
+            }
+        })
+        fs.writeFile("./database/recetas.json",JSON.stringify(recetas),(err)=> {
+            
+        })
     })
 })
 
@@ -186,4 +230,9 @@ server.listen(port,()=> {
     
     //     })
     // })
+
+
+
+
+   
 })
