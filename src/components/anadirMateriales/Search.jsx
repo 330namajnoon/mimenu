@@ -1,4 +1,4 @@
-import "../../../css/home.css";
+import "./css/search.css";
 import { useContext } from "react";
 import HomeContext from "../../../contexts/homeContext";
 function Serch({buscar}) {

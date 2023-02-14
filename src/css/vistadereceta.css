@@ -23,6 +23,18 @@
     flex-direction: row;
     align-items: center;
     background-color: #ffffff11;
+    justify-content: space-between;
+}
+.perfil-bcg div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.perfil-bcg span {
+    color: #ffffff;
+    font-size: 30px;
+    margin-right: 20px;
+
 }
 .paszamine img {
     width: 50px;
@@ -53,31 +65,47 @@
 }
 
 .v-receta-bcg {
-    width: 80%;
+    width: 90%;
     border-radius: 10px;
     background-color: rgba(255, 255, 255, 0.281);
-    padding: 20px;
+    
     display: flex;
     flex-direction: column;
     align-items: center;
     box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.466);
+    background-size: cover;
+    
+}
+.v-receta-bcg .bblur {
+    width: 90%;
+    border-radius: 10px;
+    background-color: rgba(69, 69, 69, 0.315);
+    padding: 5%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
 }
 .v-receta-bcg h1 {
     font-size: 20px;
     margin: 0;
+    text-shadow: 1px 1px 5px rgb(61, 61, 61);
 }
 .v-receta-bcg .khat {
     width: 70%;
     height: 2px;
     background-color: #ffffff;
     margin-top: 8px;
+    box-shadow: 1px 1px 5px rgb(61, 61, 61);
+    font-weight: 500;
 }
 
 .v-receta-bcg p {
     font-size: 15px;
-    color: #dadaff;
+    color: #ffffff;
     margin-top: 15px;
     line-height: 30px;
+    text-shadow: 1px 1px 1px rgb(61, 61, 61);
 }
 
 

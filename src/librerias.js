@@ -44,7 +44,7 @@ Datos.prototype.like = function(id) {
     return res;
 }
 
-Datos.prototype.sugestionesIngredientes = function() {
+Datos.prototype.sugestionesIngredientes = function(recetas) {
    function notas(receta,recetas,materiales,mydata) {
     let notaDeMateriales = 0;
     let nodaDeTiempo = 0;
@@ -80,7 +80,7 @@ Datos.prototype.sugestionesIngredientes = function() {
     return notaDeMateriales+nodaDeTiempo+notaDeVisitas+notaDeLikes;
    }
 
-   let newrecetas = this.recetas;
+   let newrecetas = recetas;
 
    newrecetas.forEach(r => {
         r.punto = notas(r,this.recetas,this.materiales,this.mydata);
@@ -105,6 +105,154 @@ Datos.prototype.sugestionesIngredientes = function() {
 
    return newrecetas1;
 
+}
+
+Datos.prototype.misComidas = function(recetas = []) {
+    function notas(receta,recetas,materiales,mydata) {
+        let notaDeMateriales = 0;
+        let nodaDeTiempo = 0;
+        let notaDeVisitas = 0;
+        let notaDeLikes = 0;
+        let ndmt = -1;
+        receta.comida.materiales.forEach(r => {
+            mydata.materiales.forEach(m => {
+                if(r === m) ndmt++;
+            })
+        })
+        notaDeMateriales = Math.floor((ndmt * (25/receta.comida.materiales.length))); 
+    
+        let ndtt = 0;
+        let ndttt = true;
+        for (let index = mydata.ultimasComidas.length-1; index >= 0; index--) {
+            if(ndttt) ndtt++;
+            if(mydata.ultimasComidas[index] === receta.comida.id) ndttt = false;
+        }
+        nodaDeTiempo = Math.floor((ndtt * (25 / recetas.length)));
+    
+        let maxv = 0;
+        recetas.forEach(r => {
+            if(r.comida.visits.length > maxv) maxv = r.comida.visits.length;
+        })
+        notaDeVisitas = Math.floor((receta.comida.visits.length * (25 / maxv)));
+    
+        let maxvl = 0;
+        recetas.forEach(r => {
+            if(r.comida.likes.length > maxvl) maxvl = r.comida.likes.length;
+        })
+        notaDeLikes = Math.floor((receta.comida.likes.length * (25 / maxvl)));
+        return notaDeMateriales+nodaDeTiempo+notaDeVisitas+notaDeLikes;
+       }
+
+       let miscomidas = [];
+       
+       if(recetas !== false)recetas.forEach(e => {
+            if(e.perfil.id === this.mydata.id) miscomidas.push(e);
+       })
+    
+       let newrecetas = miscomidas;
+       
+    
+       newrecetas.forEach(r => {
+            r.punto = notas(r,miscomidas,this.materiales,this.mydata);
+       })
+    
+       let newrecetas1 = Array(newrecetas.length);
+       
+    
+                for (let index1 = 0; index1 < newrecetas.length; index1++) {
+                    let t = newrecetas.length;
+                    for (let index2 = 0; index2 < newrecetas.length; index2++) {
+                        if(index1 !==index2 && newrecetas[index1] > newrecetas[index2]) {
+                            t++;
+                            
+                        }
+                        
+                    }
+                    while(newrecetas1[t-1] !== undefined) { t++ };
+                    newrecetas1[t-1] = newrecetas[index1];
+                }
+    
+    
+       return newrecetas1;
+}
+Datos.prototype.comidasCompartidas = function() {
+    function notas(receta,recetas,materiales,mydata) {
+        let notaDeMateriales = 0;
+        let nodaDeTiempo = 0;
+        let notaDeVisitas = 0;
+        let notaDeLikes = 0;
+        let ndmt = -1;
+        receta.comida.materiales.forEach(r => {
+            mydata.materiales.forEach(m => {
+                if(r === m) ndmt++;
+            })
+        })
+        notaDeMateriales = Math.floor((ndmt * (25/receta.comida.materiales.length))); 
+    
+        let ndtt = 0;
+        let ndttt = true;
+        for (let index = mydata.ultimasComidas.length-1; index >= 0; index--) {
+            if(ndttt) ndtt++;
+            if(mydata.ultimasComidas[index] === receta.comida.id) ndttt = false;
+        }
+        nodaDeTiempo = Math.floor((ndtt * (25 / recetas.length)));
+    
+        let maxv = 0;
+        recetas.forEach(r => {
+            if(r.comida.visits.length > maxv) maxv = r.comida.visits.length;
+        })
+        notaDeVisitas = Math.floor((receta.comida.visits.length * (25 / maxv)));
+    
+        let maxvl = 0;
+        recetas.forEach(r => {
+            if(r.comida.likes.length > maxvl) maxvl = r.comida.likes.length;
+        })
+        notaDeLikes = Math.floor((receta.comida.likes.length * (25 / maxvl)));
+        return notaDeMateriales+nodaDeTiempo+notaDeVisitas+notaDeLikes;
+       }
+
+       let comidascompartidas = [];
+       this.recetas.forEach(e => {
+            if(e.perfil.id !== this.mydata.id) comidascompartidas.push(e);
+       })
+    
+       let newrecetas = comidascompartidas;
+       
+    
+       newrecetas.forEach(r => {
+            r.punto = notas(r,comidascompartidas,this.materiales,this.mydata);
+       })
+    
+       let newrecetas1 = Array(newrecetas.length);
+       
+    
+                for (let index1 = 0; index1 < newrecetas.length; index1++) {
+                    let t = newrecetas.length;
+                    for (let index2 = 0; index2 < newrecetas.length; index2++) {
+                        if(index1 !==index2 && newrecetas[index1] > newrecetas[index2]) {
+                            t++;
+                            
+                        }
+                        
+                    }
+                    while(newrecetas1[t-1] !== undefined) { t++ };
+                    newrecetas1[t-1] = newrecetas[index1];
+                }
+    
+    
+       return newrecetas1;
+}
+
+Datos.prototype.buscarReceta = function(recetas = [],value = "") {
+    let recetasEncontradas = [];
+    recetas.forEach(r => {
+        if(r.comida.name.toLowerCase().includes(value.toLowerCase())) recetasEncontradas.push(r);
+    })
+    if(recetasEncontradas.length > 0) {
+        return recetasEncontradas;
+    }else {
+        return false;
+    }
 }
 
 function crearId(users = [{id:"asd10"}],num = 10) {

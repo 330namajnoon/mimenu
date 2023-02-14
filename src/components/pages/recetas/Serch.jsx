@@ -1,8 +1,8 @@
 import "../../../css/home.css";
 import { useContext } from "react";
-import HomeContext from "../../../contexts/homeContext";
+import RecetasContext from "../../../contexts/recetaContext";
 function Serch({buscar}) {
-    const {setBuscar} = useContext(HomeContext);
+    const {setBuscar} = useContext(RecetasContext);
     return(
         <div className="search-bcg">
             <span class="material-symbols-rounded">

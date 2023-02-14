@@ -26,21 +26,21 @@ function Home({datos}) {
     const appContext = useContext(AppContext);
     const [recetaSeleccionada,setRecetaS] = useState(new Receta("a","a"));
     const [vistaR,setVistaR] = useState(false);
-    
+    const [buscar,setBuscar] = useState("");
     
     const sdiComidas = datos.recetas;
     const misComidas = datos.recetas;
     const comidasPublicadas = datos.recetas;
     return(
-        <HomeContext.Provider value={{visitarReceta,recetaSeleccionada}}>
+        <HomeContext.Provider value={{visitarReceta,recetaSeleccionada,setBuscar}}>
             <div  className="home-paszamine">
                 
                 {vistaR === true ? <VistaDereceta datos={recetaSeleccionada}/> : null}
                 <h1 className="menudehoy">Menu de hoy</h1>
-                <Serch/>
-                {sdiComidas.length > 0 ? <Comidas comidas={datos.sugestionesIngredientes()} titel="Sugestiones de ingredientes"/> : null}
-                {misComidas.length > 0 ? <Comidas comidas={datos.recetas} titel="Mis comidas"/> : null}
-                {comidasPublicadas.length > 0 ? <Comidas comidas={datos.recetas} titel="Comidas compartidas"/> : null}
+                <Serch buscar={buscar}/>
+                {sdiComidas.length > 0 ? <Comidas comidas={datos.buscarReceta(datos.recetas,buscar) ? datos.buscarReceta(datos.recetas,buscar) : datos.sugestionesIngredientes(datos.recetas)} titel="Sugestiones de ingredientes"/> : null}
+                {misComidas.length > 0 ? <Comidas comidas={datos.misComidas(datos.recetas)} titel="Mis comidas"/> : null}
+                {comidasPublicadas.length > 0 ? <Comidas comidas={datos.comidasCompartidas()} titel="Comidas compartidas"/> : null}
             </div>
         </HomeContext.Provider>
     );

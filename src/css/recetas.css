@@ -1,0 +1,48 @@
+
+.recetas-paszamine {
+    font-family: 'Itim', cursive;
+    width: 100vw;
+    height: 100vh;
+    background-image: url(../images/home.png);
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+   
+}
+
+.recetas-paszamine .page-name {
+    color: #ffffff;
+    font-size: 25px;
+    margin-top: 10px;
+}
+
+.recetas-paszamine .recetas-paszamine-s {
+    width: 90%;
+    max-height: 60%;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.recetas-paszamine .recetas-paszamine-s h1 {
+    color: black;
+}
+
+.recetas-paszamine .recetas-paszamine-s .recetas-receta-bcg {
+    width: 100px;
+    height: 90px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-size: cover;
+    margin: 10px 0 0 10px;
+    background-color: #ffffff;
+}
+
+#recetas-anadirReceta-span {
+    color: #ffffff;
+    font-size: 35px;
+    margin: 0 0 10px 0;
+}

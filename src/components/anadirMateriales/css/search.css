@@ -1,0 +1,31 @@
+.search-bcg {
+    width: 80vw;
+    height: 35px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(2px);
+    border-radius: 9px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: 17px;
+    margin-bottom: 20px;
+}
+.search-bcg input {
+    height: 90%;
+    width: 80%;
+    padding-left: 10px;
+    background-color: transparent;
+    border: 0;
+    outline: none;
+    color: #FFFFFF;
+    font-family: 'Itim', cursive;
+    font-size: 15px;
+}
+.search-bcg input::placeholder {
+    color: #FFFFFF;
+}
+
+.search-bcg span {
+    color: #FFFFFF;
+}

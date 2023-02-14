@@ -3,7 +3,7 @@ import Openai from "./openai";
 import Sigin from "./pages/Sigin";
 import Login from "./pages/Login";
 import Home from "./pages/home/Home";
-import Receta from "./pages/Receta";
+import Receta from "./pages/recetas/Receta";
 import List from "./pages/List";
 import Perfil from "./pages/Perfil";
 import {Datos} from "../librerias";
@@ -90,6 +90,9 @@ function App() {
         {/* <Openai/> */}
   
         {page.name === "home" ? <Home datos={datos} /> : null }
+        {page.name === "receta" ? <Receta datos={datos} /> : null }
+        {page.name === "list" ? <List datos={datos} /> : null }
+        {page.name === "perfil" ? <Perfil datos={datos} /> : null }
         {/* {page.tag} */}
        
         <Menu/>

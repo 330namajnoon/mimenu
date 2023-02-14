@@ -12,23 +12,29 @@ function VistaDereceta({datos}) {
     return(
         <div  className="paszamine">
            <div className="perfil-bcg">
+                <div>
                 <img src={`./images/${datos.perfil.image}`} alt="" />
                 <h1>{datos.perfil.username}</h1>
-             
+                </div>
+                <span onClick={()=> {visitarReceta(false)}} class="material-symbols-rounded">
+                    keyboard_return     
+                </span>
            </div>
            <div className="materiales-bcg">
                 {appContext.datos.buscarMateriales(datos.comida.materiales).map(e => (
                     <div style={appContext.datos.materialesQueTengo(e.id) ? {backgroundColor: "rgba(255, 255, 255, 0.377)"} : null} className="v-material-bcg">{e.name}</div>
                 ))}
            </div>
-           <div className="v-receta-bcg">
-                 <h1>{datos.comida.name}</h1>
-                 <div className="khat"></div>
-                 <p>{datos.comida.receta}</p>
+           <div style={{backgroundImage: `url(./images/${datos.comida.image})`}} className="v-receta-bcg">
+                    <div className="bblur">
+                        <h1>{datos.comida.name}</h1>
+                        <div className="khat"></div>
+                        <p>{datos.comida.receta}</p>
+                    </div>
            </div>
                  <div className="visits-likess">
                     <div>
-                        <span  onClick={()=> {visitarReceta(false)}} class="material-symbols-rounded">
+                        <span class="material-symbols-rounded">
                             visibility
                         </span>
                         <h6>{datos.comida.visits.length}</h6>
