@@ -62,6 +62,29 @@ app.post("/descargar-recetas",uploadD.none(),(req,res)=> {
     })
 })
 
+function imageUload() {
+    let upload = multer({storage: multer.diskStorage({
+        destination:(req,file,cd)=> {
+            cd(null,"../public/images");
+        },
+        filename:(req,file,cd)=> {
+            cd(null,file.originalname);   
+        }
+    })})
+
+    return upload;
+}
+
+app.post("/guardar_image",imageUload().single('image'),(req,res)=> {
+
+    fs.rename(req.file.path,"../public/images/"+req.body.newName,(err)=> {
+        if(err) throw err;
+
+        res.send("saved");
+        console.log("saved");
+    })
+})
+
 app.post("/like",(req,res)=> {
     fs.readFile("./database/recetas.json",(err,data)=> {
         if(err) throw err;
@@ -117,76 +140,76 @@ app.get("/sigin",(req,res)=> {
 server.listen(port,()=> {
     console.log(`server is op un port ${port}!`);
 
-    fs.readFile("./database/recetas.json",(err,data)=> {
+    // fs.readFile("./database/recetas.json",(err,data)=> {
       
-        fs.readFile("./database/materiales.json",(err,mat)=>{
-            let materiales = JSON.parse(mat.toString());
+    //     fs.readFile("./database/materiales.json",(err,mat)=>{
+    //         let materiales = JSON.parse(mat.toString());
 
-            let newMateriales  = [
-                { id: 1, name: "Papas" },
-                { id: 2, name: "Cebolla" },
-                { id: 3, name: "Huevos" },
-                { id: 4, name: "Aceite de oliva" },
-                { id: 5, name: "Sal" },
-                { id: 6, name: "Pimienta negra" }
-              ]
-            newMateriales.forEach(e => {
-                let d = false;
-                materiales.forEach(ee => {
-                    if(ee.name === e.name)  d = true;
-                })
-                if(d === false ) {
-                    e.id = materiales.length+1;
-                    materiales.push(e);
-                }    
-            })
+    //         let newMateriales  = [
+    //             { id: 1, name: "Papas" },
+    //             { id: 2, name: "Cebolla" },
+    //             { id: 3, name: "Huevos" },
+    //             { id: 4, name: "Aceite de oliva" },
+    //             { id: 5, name: "Sal" },
+    //             { id: 6, name: "Pimienta negra" }
+    //           ]
+    //         newMateriales.forEach(e => {
+    //             let d = false;
+    //             materiales.forEach(ee => {
+    //                 if(ee.name === e.name)  d = true;
+    //             })
+    //             if(d === false ) {
+    //                 e.id = materiales.length+1;
+    //                 materiales.push(e);
+    //             }    
+    //         })
     
-            fs.writeFile("./database/materiales.json",JSON.stringify(materiales),(err)=> {
-                function buscarm(mismtr) {
-                    let matriales = [];
-                    mismtr.forEach(e => {
-                        materiales.forEach(ee => {
-                            if(ee.name === e.name) matriales.push(ee.id);
-                        })
-                    });
-                    return matriales;
-                }
-                if(err) throw err;
-                let recetas = JSON.parse(data.toString());
-                let newreceta  = {
-                    perfil: {
-                      username: "Chef Luis",
-                      id: "13e5ds",
-                      image: "chef_luis.jpg"
-                    },
-                    comida: {
-                      id: "receta14",
-                      name: "Tortilla de Papas",
-                      materiales: buscarm([
-                        { id: 1, name: "Papas" },
-                        { id: 2, name: "Cebolla" },
-                        { id: 3, name: "Huevos" },
-                        { id: 4, name: "Aceite de oliva" },
-                        { id: 5, name: "Sal" },
-                        { id: 6, name: "Pimienta negra" }
-                      ]),
-                      receta: "Pele y corte las papas y la cebolla en rodajas finas. Caliente aceite de oliva en una sartén y fría las papas y la cebolla a fuego medio hasta que estén doradas y crujientes. Batir los huevos en un tazón y sazonarlos con sal y pimienta negra al gusto. Agregue las papas y la cebolla a los huevos y mezcle bien. Caliente un poco más de aceite de oliva en la sartén y agregue la mezcla de huevo. Cocine a fuego medio-bajo durante unos 10 minutos o hasta que la parte inferior esté dorada. Voltee la tortilla utilizando un plato y cocine la otra cara hasta que esté dorada. Sirva caliente.",
-                      image: "tortilla_papas.jpg",
-                      visits: [],
-                      likes: []
-                    }
-                  }
+    //         fs.writeFile("./database/materiales.json",JSON.stringify(materiales),(err)=> {
+    //             function buscarm(mismtr) {
+    //                 let matriales = [];
+    //                 mismtr.forEach(e => {
+    //                     materiales.forEach(ee => {
+    //                         if(ee.name === e.name) matriales.push(ee.id);
+    //                     })
+    //                 });
+    //                 return matriales;
+    //             }
+    //             if(err) throw err;
+    //             let recetas = JSON.parse(data.toString());
+    //             let newreceta  = {
+    //                 perfil: {
+    //                   username: "Chef Luis",
+    //                   id: "13e5ds",
+    //                   image: "chef_luis.jpg"
+    //                 },
+    //                 comida: {
+    //                   id: "receta14",
+    //                   name: "Tortilla de Papas",
+    //                   materiales: buscarm([
+    //                     { id: 1, name: "Papas" },
+    //                     { id: 2, name: "Cebolla" },
+    //                     { id: 3, name: "Huevos" },
+    //                     { id: 4, name: "Aceite de oliva" },
+    //                     { id: 5, name: "Sal" },
+    //                     { id: 6, name: "Pimienta negra" }
+    //                   ]),
+    //                   receta: "Pele y corte las papas y la cebolla en rodajas finas. Caliente aceite de oliva en una sartén y fría las papas y la cebolla a fuego medio hasta que estén doradas y crujientes. Batir los huevos en un tazón y sazonarlos con sal y pimienta negra al gusto. Agregue las papas y la cebolla a los huevos y mezcle bien. Caliente un poco más de aceite de oliva en la sartén y agregue la mezcla de huevo. Cocine a fuego medio-bajo durante unos 10 minutos o hasta que la parte inferior esté dorada. Voltee la tortilla utilizando un plato y cocine la otra cara hasta que esté dorada. Sirva caliente.",
+    //                   image: "tortilla_papas.jpg",
+    //                   visits: [],
+    //                   likes: []
+    //                 }
+    //               }
                   
-                recetas.push(newreceta);
+    //             recetas.push(newreceta);
         
-                fs.writeFile("./database/recetas.json",JSON.stringify(recetas),(err)=> {
+    //             fs.writeFile("./database/recetas.json",JSON.stringify(recetas),(err)=> {
             
-                })
-            })
+    //             })
+    //         })
            
-        })
+    //     })
        
-    })    
+    // })    
 
     // fs.readFile("./database/materiales.json",(err,data)=> {
     //     if(err) throw err;
