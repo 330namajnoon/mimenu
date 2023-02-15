@@ -1,7 +1,7 @@
 import "./css/search.css";
 import { useContext } from "react";
 import HomeContext from "../../../contexts/homeContext";
-function Serch({buscar}) {
+function Search({buscar}) {
     const {setBuscar} = useContext(HomeContext);
     return(
         <div className="search-bcg">
@@ -13,4 +13,4 @@ function Serch({buscar}) {
     );
 }
 
-export default Serch;
+export default Search;

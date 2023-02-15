@@ -1,15 +1,15 @@
 import "../../../css/recetas.css";
 import { useState,useContext } from "react";
-import HomeContext from "../../../contexts/homeContext";
+import RecetasContext from "../../../contexts/recetaContext";
 
 function Comida({receta}) {
-    const {visitarReceta} = useContext(HomeContext);
+    const {recetaselectada} = useContext(RecetasContext);
    
     return(
         <div onClick={(e)=> {
 
             e.stopPropagation();
-            visitarReceta(true,receta);
+            recetaselectada(true,receta);
     
             }} style={{backgroundImage: `url(./images/${receta.comida.image})`}} className="recetas-receta-bcg">
           

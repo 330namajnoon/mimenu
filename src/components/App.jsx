@@ -6,7 +6,7 @@ import Home from "./pages/home/Home";
 import Receta from "./pages/recetas/Receta";
 import List from "./pages/List";
 import Perfil from "./pages/Perfil";
-import {Datos} from "../librerias";
+import {Datos,host} from "../librerias";
 import Menu from "./menu/Menu";
 import AppContext from "../contexts/app";
 import "../css/app.css";
@@ -49,14 +49,17 @@ function App() {
       method,
       url,
 
-      data
+      data,
+      onDownloadProgress:(p)=> {
+        
+      }
     })
     
     return respuest.data;
   }
 
   function like(myid,id,method) {
-      httpRequest("post","http://localhost:4000/like",{myid:myid,id:id,method:method}).then((r)=>{
+      httpRequest("post",`${host}/like`,{myid:myid,id:id,method:method}).then((r)=>{
         let newdatos = new Datos();
         newdatos.materiales = datos.materiales;
         newdatos.mydata = r.mydata ? r.mydata : datos.mydata;
@@ -64,13 +67,23 @@ function App() {
         setDatos(newdatos);
       })
   }
+
+  function guardarReceta(receta = {}) {
+      httpRequest("post",`${host}/guardar_receta`).then((r)=> {
+          let newdatos = new Datos();
+          newdatos.materiales = datos.materiales;
+          newdatos.mydata = datos.mydata;
+          newdatos.recetas = r;
+          setDatos(newdatos);
+      })
+  }
   
   useEffect(()=> {
-      httpRequest("post","http://localhost:4000/descargar-materiales",{id:"sina"}).then((r )=>{
+      httpRequest("post",`${host}/descargar-materiales`,{id:"sina"}).then((r )=>{
           datos.materiales = r;
-          httpRequest("post","http://localhost:4000/descargar-datos-usuarios",{id:JSON.parse(localStorage.getItem("userData")).id}).then((r)=>{
+          httpRequest("post",`${host}/descargar-datos-usuarios`,{id:JSON.parse(localStorage.getItem("userData")).id}).then((r)=>{
               datos.mydata = r;
-              httpRequest("post","http://localhost:4000/descargar-recetas",{id:"sina"}).then((r)=>{
+              httpRequest("post",`${host}/descargar-recetas`,{id:"sina"}).then((r)=>{
                   let newdatos = new Datos();
                   newdatos.materiales = datos.materiales;
                   newdatos.mydata = datos.mydata;
@@ -85,7 +98,7 @@ function App() {
   
   const [page,setPage] = useState(pages.home);
   return (
-    <AppContext.Provider value={{page,pageChenge,datos,like}} >
+    <AppContext.Provider value={{httpRequest,page,pageChenge,datos,like,guardarReceta}} >
       <div className="App">
         {/* <Openai/> */}
   

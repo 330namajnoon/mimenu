@@ -1,4 +1,4 @@
-
+const host = "http://localhost:4000";
 
 function Datos() {
     this.materiales = [];
@@ -288,4 +288,4 @@ async function httpRequest(method,url,data = {id:""}) {
    
   }
 
-module.exports = {Datos,crearId,Users,buscarMisDatos,httpRequest};
+module.exports = {Datos,crearId,Users,buscarMisDatos,httpRequest,host};
