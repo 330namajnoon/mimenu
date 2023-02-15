@@ -9,7 +9,7 @@ function Receta({datos}) {
     const [recetaSelectada,setRecetaSelectada] = useState({display: false});
     const [buscar,setBuscar] = useState("");
     return(
-        <RecetasContext.Provider value={{setBuscar,recetaselectada}} >
+        <RecetasContext.Provider value={{setBuscar,recetaselectada,setRecetaSelectada}} >
             {recetaSelectada.display ? <CambiarRecetas receta={recetaSelectada}/> : null}
             <div className="recetas-paszamine">
                 <h1 className="page-name">Recetas</h1>

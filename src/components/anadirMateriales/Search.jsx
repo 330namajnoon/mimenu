@@ -1,14 +1,14 @@
 import "./css/search.css";
 import { useContext } from "react";
-import HomeContext from "../../../contexts/homeContext";
-function Search({buscar}) {
-    const {setBuscar} = useContext(HomeContext);
+
+function Search({buscar,setBuscar}) {
+    
     return(
-        <div className="search-bcg">
-            <span class="material-symbols-rounded">
+        <div className="anadirMateriales_search_bcg">
+            <span id="search" class="material-symbols-rounded">
                 search
             </span>
-            <input onChange={(e)=>{setBuscar(e.target.value)}} type="text" placeholder="Buscar" value={buscar}/>
+            <input onChange={(e)=> {setBuscar(e.target.value)}} type="text"  placeholder="Buscar " value={buscar}/>
         </div>
     );
 }

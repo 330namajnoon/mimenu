@@ -1,0 +1,18 @@
+
+
+.buscar_material_paszamine {
+    width: 77%;
+    max-height: 50%;
+    overflow-y: auto;
+   
+    position: absolute;
+    z-index: 4;
+    border-radius: 0 0 10px 10px;
+}
+.material {
+    width: 92%;
+    padding: 3vw;
+    background-color: rgb(99, 37, 101);
+    border-bottom: solid .5px gray;
+    color: white;
+}

@@ -76,6 +76,7 @@ function App() {
           newdatos.recetas = r;
           setDatos(newdatos);
       })
+
   }
   
   useEffect(()=> {
@@ -97,9 +98,13 @@ function App() {
   },[]);
   
   const [page,setPage] = useState(pages.home);
+  const [loading,setLoading] = useState(true);
   return (
-    <AppContext.Provider value={{httpRequest,page,pageChenge,datos,like,guardarReceta}} >
+    <AppContext.Provider value={{httpRequest,page,pageChenge,datos,like,guardarReceta,setLoading}} >
       <div className="App">
+        {loading ? 
+          <img style={{top:`${((window.innerHeight/2)-((window.innerWidth/100)*40)/2)}px`}} className="loading_gif" src="./images/loading.gif" alt="" /> : null
+        }
         {/* <Openai/> */}
   
         {page.name === "home" ? <Home datos={datos} /> : null }

@@ -12,6 +12,8 @@
     left: 0;
     top: 0;
     font-family: 'Itim', cursive;
+    overflow-y: auto;
+    padding-bottom: 50px;
 }
 
 .cambiarRecetas_paszamine .receta_paszamine {
@@ -37,7 +39,7 @@
     color: white;
     font-size: 35px;
     position: absolute;
-    z-index: 2;
+    z-index: 3;
     left: 10px;
     top: 5px;
 }
@@ -50,6 +52,7 @@
     align-items: center;
     font-family: 'Itim', cursive;
     margin-bottom: 10px;
+    width: 65%;
 
 }
 .receta_paszamine h1 {
@@ -65,9 +68,11 @@
     font-family: 'Itim', cursive;
     border: solid .5px gray;
     padding: 1vw;
+    padding-left: 3vw;
     border-radius: 5px;
     color: white;
     height: 30px;
+    width: 100%;
     outline: none;
 }
 
@@ -93,4 +98,21 @@
     height: 25vw;
     border-radius: 3vw;
     object-fit: cover;
+}
+
+.laoding_paszamine {
+    margin-top: 8px;
+    width: 95%;
+    height: 5px;
+    background-color: rgba(240, 248, 255, 0);
+    border: .5px solid gray;
+    border-radius: 5px;
+    
+}
+.laoding_paszamine div {
+    width: 0%;
+    height: 100%;
+    background-color: rgba(144, 0, 255, 0.63);
+    border-radius: 5px;
+    transition: all .5s;
 }

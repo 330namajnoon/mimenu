@@ -1,14 +1,56 @@
 
 .anadir-materiales-paszamine {
-    width: 100vw;
-    height: 100vh;
-    background-color: aliceblue;
-    position: absolute;
+    width: 100%;
     z-index: 2;
     left: 0;
     top: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-top: 30px;
     
+}
+
+.materiales_paszamine {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.material_paszamine {
+    padding: 10px 15px 10px 10px;
+    border-radius: 15vw;
+    background-color: rgba(255, 255, 255, 0.173);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 5px;
+}
+.material_paszamine h3 {
+    font-size: 17px;
+    color: white;
+    margin-left: 8px;
+}
+
+#borrar_span {
+    position: static;
+    font-size: 20px;
+    margin: 0;
+    color: rgb(144, 0, 255);
+}
+
+hr {
+    margin-top: 10px;
+    min-width: 90%;
+}
+
+.nuevas_materiales-paszamine {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
