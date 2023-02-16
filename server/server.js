@@ -5,14 +5,16 @@ const express = require("express");
 const multer = require("multer");
 const paht = require("path");
 const {Server} = require("socket.io");
-const pdp = paht.join(__dirname,"./database");
+const pdp = paht.join(__dirname,"./");
+const pdpm = paht.join(__dirname,"/node_modules");
 const port = process.env.PORT || 4000;
 const cors = require("cors");
 const app = express();
 const bodyParser = require('body-parser');
 
 app.use(bodyParser.json());
-// app.use(express.static(pdp));
+// app.use("/node_modules",express.static(__dirname + "/node_modules"));
+app.use(express.static(pdp));
 app.use(cors())
 const server = http.createServer(app);
 const io = new Server(server,{
@@ -62,6 +64,8 @@ app.post("/descargar-recetas",uploadD.none(),(req,res)=> {
     })
 })
 
+
+
 function imageUload() {
     let upload = multer({storage: multer.diskStorage({
         destination:(req,file,cd)=> {
@@ -75,14 +79,58 @@ function imageUload() {
     return upload;
 }
 
-app.post("/guardar_image",imageUload().single('image'),(req,res)=> {
+app.post("/guardar_receta",uploadD.none(),(req,res)=> {
 
-    fs.rename(req.file.path,"../public/images/"+req.body.newName,(err)=> {
+    let receta = JSON.parse(req.body.receta);
+    fs.readFile("./database/recetas.json",(err,data)=> {
         if(err) throw err;
-
-        res.send("saved");
-        console.log("saved");
+        let recetas = JSON.parse(data.toString());
+        if(receta.comida.id === "") {
+            recetas.comida.id = miLibreria.crearRecetaID(recetas,10);
+            recetas.push(receta);
+        }else {
+            for (let index = 0; index < recetas.length; index++) {
+                if(recetas[index].comida.id === receta.comida.id ) {
+                    recetas[index] = receta;
+                }
+            }
+        }
+        fs.writeFile("./database/recetas.json",JSON.stringify(recetas),(err)=> {
+            if(err) throw err;
+            res.send(JSON.stringify(recetas));
+        })
     })
+
+})
+
+app.post("/guardar_receta_I",imageUload().single('image'),(req,res)=> {
+    console.log(req.file);
+    // let imgn1 = req.file.name;
+    // let imgn2 = imgn1.split(".");
+    // let newImageName = receta.comida.id + "." + imgn2[1];
+    // fs.rename(req.file.path,"../public/images/"+req.body.newName,(err)=> {
+    //     if(err) throw err;
+    //     console.log("saved name");
+    // })
+    // let receta = JSON.parse(req.body.receta);
+    // fs.readFile("./database/recetas.json",(err,data)=> {
+    //     if(err) throw err;
+    //     let recetas = JSON.parse(data.toString());
+    //     if(receta.comida.id === "") {
+    //         recetas.comida.id = miLibreria.crearRecetaID(recetas,10);
+    //         recetas.push(receta);
+    //     }else {
+    //         for (let index = 0; index < recetas.length; index++) {
+    //             if(recetas[index].comida.id === receta.comida.id ) {
+    //                 recetas[index] = receta;
+    //             }
+    //         }
+    //     }
+    //     fs.writeFile("./database/recetas.json",JSON.stringify(recetas),(err)=> {
+    //         if(err) throw err;
+    //         res.send(JSON.stringify(recetas));
+    //     })
+    // })
 })
 
 app.post("/like",(req,res)=> {
@@ -135,6 +183,27 @@ app.get("/sigin",(req,res)=> {
             console.log("user saved")
         })
     })
+})
+
+app.post("/guardar_materiales",uploadD.none(),(req,res)=> {
+    fs.readFile("./database/materiales.json",(err,data)=> {
+        if(err) throw err;
+        let materiales = JSON.parse(data.toString());
+        let newMateriales  = JSON.parse(req.body.materiales);
+        newMateriales.forEach(e => {
+            let d = false;
+            materiales.forEach(ee => {
+                if(ee.name == e.name)  d = true;
+            })
+            if(d == false ) {
+                e.id = materiales.length+1;
+                materiales.push(e);
+            }    
+        })
+        fs.writeFile("./database/materiales.json",JSON.stringify(materiales),(err)=> {
+            if(err) throw err;
+        })
+    })    
 })
 
 server.listen(port,()=> {
@@ -211,34 +280,7 @@ server.listen(port,()=> {
        
     // })    
 
-    // fs.readFile("./database/materiales.json",(err,data)=> {
-    //     if(err) throw err;
-    //     let materiales = JSON.parse(data.toString());
-    //     let newMateriales  = [
-    //         { id: 1, name: "Arroz" },
-    //         { id: 2, name: "Pollo" },
-    //         { id: 3, name: "Cebolla" },
-    //         { id: 4, name: "Ajo" },
-    //         { id: 5, name: "Pimiento rojo" },
-    //         { id: 6, name: "Pimiento verde" },
-    //         { id: 7, name: "Tomate" },
-    //         { id: 8, name: "Caldo de pollo" },
-    //         { id: 9, name: "Aceite de oliva" },
-    //         { id: 10, name: "Sal" },
-    //         { id: 11, name: "Pimienta negra" },
-    //         { id: 12, name: "Comino" },
-    //         { id: 13, name: "Perejil" },
-    //         ]
-    //     newMateriales.forEach(e => {
-    //         let d = false;
-    //         materiales.forEach(ee => {
-    //             if(ee.name == e.name)  d = true;
-    //         })
-    //         if(d == false ) {
-    //             e.id = materiales.length+1;
-    //             materiales.push(e);
-    //         }    
-    //     })
+    
 
     //     fs.writeFile("./database/materiales.json",JSON.stringify(materiales),(err)=> {
     
