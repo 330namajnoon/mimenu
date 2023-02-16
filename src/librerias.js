@@ -275,6 +275,28 @@ function crearId(users = [{id:"asd10"}],num = 10) {
 
 }
 
+function crearRecetaID(recetas = {},num = 10) {
+    let ids = "QWERTYUIOPLKJHGFDSAZXCVBNMqwertyuioplkjhgfdsazxcvbnm";
+    let t = true;
+    while (t) {
+        let newid = "";
+        for (let index = 0; index < num; index++) {
+            
+            newid += ids.charAt(Math.floor(Math.random()*ids.length));
+
+        }
+        let rt = true;
+        recetas.forEach(e => {
+            if(e.comida.id === newid) rt = false;
+        })
+
+        if(rt){
+            t = false;
+            return newid;
+        }
+    }
+}
+
 function Users(id,username,password,image) {
     this.id = id;
     this.username = username;
@@ -288,4 +310,4 @@ async function httpRequest(method,url,data = {id:""}) {
    
   }
 
-module.exports = {Datos,crearId,Users,buscarMisDatos,httpRequest,host};
+module.exports = {crearRecetaID,Datos,crearId,Users,buscarMisDatos,httpRequest,host};

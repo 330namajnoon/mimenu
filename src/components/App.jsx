@@ -51,7 +51,7 @@ function App() {
 
       data,
       onDownloadProgress:(p)=> {
-        
+          if((p.loaded/p.total*100) === 100) setLoading(false);
       }
     })
     
@@ -68,15 +68,29 @@ function App() {
       })
   }
 
-  function guardarReceta(receta = {}) {
-      httpRequest("post",`${host}/guardar_receta`).then((r)=> {
-          let newdatos = new Datos();
-          newdatos.materiales = datos.materiales;
-          newdatos.mydata = datos.mydata;
-          newdatos.recetas = r;
-          setDatos(newdatos);
-      })
+  function guardarReceta(receta = {},file) {
+    let formdata = new FormData();
+      if(file) {
 
+        let imgn1 = file.name;
+        let imgn2 = imgn1.split(".");
+        let newImageName = receta.comida.id + "." + imgn2[1];
+        receta.comida.image = newImageName;
+        formdata.append("newName",newImageName);
+        formdata.append("image",file);
+      }
+      formdata.append("receta",JSON.stringify(receta));
+      axios.post(file ? `${host}/guardar_receta_I` : `${host}/guardar_receta`,formdata,{
+          onDownloadProgress:(p)=> {
+            if((p.loaded/p.total*100) === 100) setLoading(false);
+          }
+      }).then((r)=> {
+        let newdatos = new Datos();
+        newdatos.materiales = datos.materiales;
+        newdatos.mydata = datos.mydata;
+        newdatos.recetas = r.data;
+        setDatos(newdatos);
+      })
   }
   
   useEffect(()=> {
@@ -98,7 +112,7 @@ function App() {
   },[]);
   
   const [page,setPage] = useState(pages.home);
-  const [loading,setLoading] = useState(true);
+  const [loading,setLoading] = useState(false);
   return (
     <AppContext.Provider value={{httpRequest,page,pageChenge,datos,like,guardarReceta,setLoading}} >
       <div className="App">

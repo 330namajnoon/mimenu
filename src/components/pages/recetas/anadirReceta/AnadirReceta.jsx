@@ -1,4 +1,4 @@
-import "./css/cambiarRecetas.css";
+import "./css/anadirReceta.css";
 import axios from "axios";
 import { host } from "../../../../librerias";
 import recetasContext from "../../../../contexts/recetaContext";
@@ -6,16 +6,16 @@ import appContext from "../../../../contexts/app";
 import { useContext ,useRef,useState} from "react";
 import AnadirMateriales from "../../../anadirMateriales/anadirMateriales";
 
-function CambiarRecetas({receta}) {
+function AnadirReceta({setAnadirreceta}) {
     const {recetaselectada,setRecetaSelectada} = useContext(recetasContext);
-    const {guardarReceta,setLoading} = useContext(appContext);
+    const {guardarReceta,setLoading,datos} = useContext(appContext);
     const laoding = useRef(null);
     const [laodingDisplay,setL] = useState(false);
-    const [materiales,setMateriales] = useState(receta.comida.materiales);
+    const [materiales,setMateriales] = useState([]);
     const file = useRef(null);
     const image = useRef(null);
     const recetaa = useRef(null);
-    const [nombredelacomida,setNombre] = useState(receta.comida.name);
+    const [nombredelacomida,setNombre] = useState("");
     
     return(
         <div  className="cambiarRecetas_paszamine">
@@ -27,7 +27,7 @@ function CambiarRecetas({receta}) {
                 <div className="image_paszamine">
                     <input onChange={(e)=>{guardarImage(e.target.files[0])}} ref={file} style={{display:"none"}} type="file" />
 
-                    <img ref={image} onClick={(e)=>{file.current.click()}} src={`./images/${receta.comida.image}`} alt="" />
+                    <img ref={image} onClick={(e)=>{file.current.click()}} src={`./images/pulsar.jpg`} alt="" />
                     {
                         laodingDisplay ?  
                         <div className="laoding_paszamine">
@@ -42,9 +42,9 @@ function CambiarRecetas({receta}) {
                 </div>
                 <div className="dato_paszamine">
                     <h1>Receta</h1>
-                    <textarea ref={recetaa}>{receta.comida.receta}</textarea>
+                    <textarea ref={recetaa}></textarea>
                 </div>
-                <input onClick={(e)=> {setReceta()}} type="button" value={"Guardar"} />
+                <input onClick={(e)=> {setReceta()}} type="button" value={"Añadir"} />
             </div>
         </div>
     );
@@ -66,17 +66,17 @@ function CambiarRecetas({receta}) {
     }
 
     function setReceta() {
-        let newreceta = JSON.parse(JSON.stringify(receta));
+        let newreceta = {perfil:datos.mydata,comida:{}};
         newreceta.comida.receta = recetaa.current.value;
         newreceta.comida.name = nombredelacomida;
         newreceta.comida.materiales = materiales;
-        newreceta.display = false;
+        console.log(newreceta);
         setLoading(true);
         setTimeout(()=>{
-            setRecetaSelectada(newreceta);
-            guardarReceta(newreceta,file.current.files[0]);
+            setAnadirreceta(false);
+            // guardarReceta(newreceta,file.current.files[0]);
         },2000)
     }
 }
 
-export default CambiarRecetas;
+export default AnadirReceta;
