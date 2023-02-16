@@ -70,11 +70,14 @@ function AnadirReceta({setAnadirreceta}) {
         newreceta.comida.receta = recetaa.current.value;
         newreceta.comida.name = nombredelacomida;
         newreceta.comida.materiales = materiales;
-        console.log(newreceta);
+        newreceta.comida.id = "";
+        newreceta.comida.image = "";
+        newreceta.comida.visits = [];
+        newreceta.comida.likes = [];
         setLoading(true);
         setTimeout(()=>{
             setAnadirreceta(false);
-            // guardarReceta(newreceta,file.current.files[0]);
+            guardarReceta(newreceta,file.current.files[0]);
         },2000)
     }
 }

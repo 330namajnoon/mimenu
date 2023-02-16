@@ -8,7 +8,7 @@ import AnadirMateriales from "../../../anadirMateriales/anadirMateriales";
 
 function CambiarRecetas({receta}) {
     const {recetaselectada,setRecetaSelectada} = useContext(recetasContext);
-    const {guardarReceta,setLoading} = useContext(appContext);
+    const {borrarReceta,guardarReceta,setLoading} = useContext(appContext);
     const laoding = useRef(null);
     const [laodingDisplay,setL] = useState(false);
     const [materiales,setMateriales] = useState(receta.comida.materiales);
@@ -45,6 +45,8 @@ function CambiarRecetas({receta}) {
                     <textarea ref={recetaa}>{receta.comida.receta}</textarea>
                 </div>
                 <input onClick={(e)=> {setReceta()}} type="button" value={"Guardar"} />
+                <br />
+                <input onClick={(e)=> {borrarreceta()}} type="button" value={"Borrar"} />
             </div>
         </div>
     );
@@ -63,6 +65,19 @@ function CambiarRecetas({receta}) {
             if(l >= 100) clearInterval(timer);
             l++;
         }, 10);
+    }
+
+    function borrarreceta() {
+        let newreceta = JSON.parse(JSON.stringify(receta));
+        newreceta.comida.receta = recetaa.current.value;
+        newreceta.comida.name = nombredelacomida;
+        newreceta.comida.materiales = materiales;
+        newreceta.display = false;
+        setLoading(true);
+        setTimeout(()=>{
+            setRecetaSelectada(newreceta);
+            borrarReceta(receta.comida.id);
+        },2000)
     }
 
     function setReceta() {

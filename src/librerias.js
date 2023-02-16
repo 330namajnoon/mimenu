@@ -297,6 +297,15 @@ function crearRecetaID(recetas = {},num = 10) {
     }
 }
 
+function borrarReceta(recetas = [],id = "") {
+    let newrecetas = [];
+    recetas.forEach(e => {
+        if(e.comida.id !== id) newrecetas.push(e);
+    })
+
+    return newrecetas;
+}
+
 function Users(id,username,password,image) {
     this.id = id;
     this.username = username;
@@ -306,8 +315,24 @@ function Users(id,username,password,image) {
     this.ultimasComidas = [];
 }
 
+function likesAndVisits(recetas = [],id = "") {
+    let misrecetas = [];
+
+    recetas.forEach(e => {
+        if(e.perfil.id === id) misrecetas.push(e);
+    })
+    let visits = 0;
+    let likes = 0;
+    misrecetas.forEach(e => {
+        visits += e.comida.visits.length;
+        likes += e.comida.likes.length;
+     
+    })
+    return {visits,likes};
+}
+
 async function httpRequest(method,url,data = {id:""}) {
    
   }
 
-module.exports = {crearRecetaID,Datos,crearId,Users,buscarMisDatos,httpRequest,host};
+module.exports = {likesAndVisits,borrarReceta,crearRecetaID,Datos,crearId,Users,buscarMisDatos,httpRequest,host};

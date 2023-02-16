@@ -4,8 +4,8 @@ import Sigin from "./pages/Sigin";
 import Login from "./pages/Login";
 import Home from "./pages/home/Home";
 import Receta from "./pages/recetas/Receta";
-import List from "./pages/List";
-import Perfil from "./pages/Perfil";
+import Materiales from "./pages/materiales/Materiales";
+import Perfil from "./pages/perfil/Perfil"
 import {Datos,host} from "../librerias";
 import Menu from "./menu/Menu";
 import AppContext from "../contexts/app";
@@ -32,9 +32,9 @@ function App() {
       name: "receta",
       tag: <Receta/>
     },
-    list: {
-      name: "list",
-      tag: <List/>
+    materiales: {
+      name: "materiales",
+      tag: <Materiales />
     }, 
     perfil: {
       name: "perfil",
@@ -68,15 +68,24 @@ function App() {
       })
   }
 
+  function guardarMisMateriales(materiales = []) {
+    let formdata = new FormData();
+    formdata.append("userId",datos.mydata.id);
+    formdata.append("materiales",JSON.stringify(materiales));
+    axios.post(`${host}/guardar_user`,formdata).then((r)=> {
+      setLoading(false);
+      let newdatos = new Datos();
+      newdatos.materiales = datos.materiales;
+      newdatos.mydata = r.data;
+      newdatos.recetas = datos.recetas;
+      setDatos(newdatos);
+      pageChenge("home");
+    })
+  }
+
   function guardarReceta(receta = {},file) {
     let formdata = new FormData();
       if(file) {
-
-        let imgn1 = file.name;
-        let imgn2 = imgn1.split(".");
-        let newImageName = receta.comida.id + "." + imgn2[1];
-        receta.comida.image = newImageName;
-        formdata.append("newName",newImageName);
         formdata.append("image",file);
       }
       formdata.append("receta",JSON.stringify(receta));
@@ -91,6 +100,33 @@ function App() {
         newdatos.recetas = r.data;
         setDatos(newdatos);
       })
+  }
+
+  function borrarReceta(id) {
+      let formdata = new FormData();
+      formdata.append("id",id);
+      axios.post(`${host}/borrar_receta`,formdata).then((r)=> {
+        setLoading(false);
+        let newdatos = new Datos();
+        newdatos.materiales = datos.materiales;
+        newdatos.mydata = datos.mydata;
+        newdatos.recetas = r.data;
+        setDatos(newdatos);
+      })
+  }
+
+  function guardarPerfil(mydata,image) {
+    let formdata = new FormData();
+    formdata.append("mydata",JSON.stringify(mydata));
+    formdata.append("image",image? image : "false");
+    axios.post(`${host}/guardar_perfil`,formdata).then((r)=> {
+      setLoading(false);
+      let newdatos = new Datos();
+      newdatos.materiales = datos.materiales;
+      newdatos.mydata = r.data;
+      newdatos.recetas = datos.recetas;
+      setDatos(newdatos);
+    })
   }
   
   useEffect(()=> {
@@ -114,7 +150,7 @@ function App() {
   const [page,setPage] = useState(pages.home);
   const [loading,setLoading] = useState(false);
   return (
-    <AppContext.Provider value={{httpRequest,page,pageChenge,datos,like,guardarReceta,setLoading}} >
+    <AppContext.Provider value={{guardarPerfil,guardarMisMateriales,borrarReceta,httpRequest,page,pageChenge,datos,like,guardarReceta,setLoading}} >
       <div className="App">
         {loading ? 
           <img style={{top:`${((window.innerHeight/2)-((window.innerWidth/100)*40)/2)}px`}} className="loading_gif" src="./images/loading.gif" alt="" /> : null
@@ -123,7 +159,7 @@ function App() {
   
         {page.name === "home" ? <Home datos={datos} /> : null }
         {page.name === "receta" ? <Receta datos={datos} /> : null }
-        {page.name === "list" ? <List datos={datos} /> : null }
+        {page.name === "materiales" ? <Materiales datos={datos} /> : null }
         {page.name === "perfil" ? <Perfil datos={datos} /> : null }
         {/* {page.tag} */}
        

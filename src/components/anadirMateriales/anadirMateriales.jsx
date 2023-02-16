@@ -8,6 +8,7 @@ function AnadirMateriales({materiales,setMateriales}) {
     const [buscar,setBuscar] = useState("");
     return(
         <div className="anadir-materiales-paszamine">
+            
             <Search buscar={buscar} setBuscar={setBuscar}/>
             <div className="nuevas_materiales-paszamine" >
                 {buscarMaterial(datos.materiales,buscar).length > 0 ?

@@ -1,0 +1,78 @@
+
+.perfil_paszamine {
+    font-family: 'Itim', cursive;
+    width: 100vw;
+    height: 100vh;
+    background-image: url(../../../../images/home.png);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-size: cover;
+    
+}
+
+.perfil_paszamine .page_name {
+    color: #ffffff;
+    font-size: 25px;
+    margin-top: 10px;
+}
+
+.perfil_paszamine .perfil_datos_paszamine {
+    width: 100%;
+    height: 70%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+
+}
+
+.perfil_datos_paszamine input[type = "file"] {
+    display: none;
+}
+
+.perfil_datos_paszamine img {
+    width: 40vw;
+    height: 40vw;
+    border-radius: 20vw;
+    object-fit: cover;
+    margin-bottom: 10px;
+    border: solid .5px #0a8af3;
+}
+
+.perfil_datos_paszamine input {
+    font-family: 'Itim', cursive;
+    width: 45vw;
+    padding: 3vw;
+    border-radius: 5px;
+    border: solid 0.5px #0a8af3 ;
+    outline: none;
+    background-color: #ffffff2a;
+    color: #ffffff;
+    font-size: 15px;
+    margin-top: 20px;
+}
+
+.perfil_datos_paszamine .visits_likes_paszamine {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    color: #0a8af3;
+    width: 100%;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.visits_likes_paszamine span {
+    margin-left: 10px;
+    font-size: 6vw;
+}
+.visits_likes_paszamine h6 {
+    font-size: 4vw;
+    margin-left: 3px;
+}
+
+.perfil_datos_paszamine input[type = "button"] {
+    background-color: #0a8af3;
+    border: solid .5px #ffffff3a;
+}

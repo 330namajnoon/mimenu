@@ -1,0 +1,41 @@
+
+
+.mismateriales_paszamine {
+    font-family: 'Itim', cursive;
+    width: 100vw;
+    height: 100vh;
+    background-image: url(../../../../images/home.png);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-size: cover;
+    
+}
+
+.mismateriales_paszamine .pagename {
+    color: #ffffff;
+    font-size: 25px;
+    margin-top: 10px;
+}
+
+.mismateriales_paszamine input[type = "button"] {
+    width: 150px;
+    height: 40px;
+    font-family: 'Itim', cursive;
+    font-size: 17px;
+    border-radius: 7px;
+    border: solid .5px gray;
+    background-color: rgba(225, 162, 255, 0.637);
+    color: white;
+    margin-top: 5px;
+    margin-top: 20px;
+}
+
+.mismateriales_paszamine .materiales_paszamine_ {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    height: 70%;
+    overflow-y: auto;
+
+}
