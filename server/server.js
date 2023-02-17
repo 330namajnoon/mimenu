@@ -1,11 +1,80 @@
+function crearId(users = [{id:"asd10"}],num = 10) {
+    let ids = "abcdefghijklnmopqrstuvwxyz123456789";
+    let d = true;
+    while (d) {
+        let newId = "";
+        for (let index = 0; index < num; index++) {
+            newId += ids.charAt(Math.floor(Math.random()*ids.length));
+        }
+        let t = false;
+        users.forEach(e => {
+            if(e.id === newId) t = true;
+        })
+        if(t === false) {
+            d = false;
+            return newId;
+        }    
+    }
 
-const miLibreria = require("../src/librerias");
+}
+function crearRecetaID(recetas = {},num = 10) {
+    let ids = "QWERTYUIOPLKJHGFDSAZXCVBNMqwertyuioplkjhgfdsazxcvbnm";
+    let t = true;
+    while (t) {
+        let newid = "";
+        for (let index = 0; index < num; index++) {
+            
+            newid += ids.charAt(Math.floor(Math.random()*ids.length));
+
+        }
+        let rt = true;
+        recetas.forEach(e => {
+            if(e.comida.id === newid) rt = false;
+        })
+
+        if(rt){
+            t = false;
+            return newid;
+        }
+    }
+}
+
+function borrarReceta(recetas = [],id = "") {
+    let newrecetas = [];
+    recetas.forEach(e => {
+        if(e.comida.id !== id) newrecetas.push(e);
+    })
+
+    return newrecetas;
+}
+
+function Users(id,username,password,image) {
+    this.id = id;
+    this.username = username;
+    this.password = password;
+    this.image = image;
+    this.materiales = [];
+    this.ultimasComidas = [];
+}
+function buscarMisDatos(users = [],id) {
+    let mydata;
+    users.forEach(e => {
+        if(e.id === id) mydata = e;
+    })
+
+    if (mydata) {
+        return mydata;
+    }else {
+        return "error";
+    }
+}
+const miLibreria = {buscarMisDatos,crearId,crearRecetaID,Users,borrarReceta};
 const http = require("http");
 const express = require("express");
 const multer = require("multer");
 const paht = require("path");
 const {Server} = require("socket.io");
-const pdp = paht.join(__dirname,"./");
+const pdp = paht.join(__dirname,"./build");
 const pdpm = paht.join(__dirname,"/node_modules");
 const port = process.env.PORT || 4000;
 const cors = require("cors");
@@ -164,7 +233,7 @@ app.post("/guardar_perfil",imageUload().single("image") ? imageUload().single("i
     fs.readFile("./database/users.json",(err,data)=> {
         let users = JSON.parse(data.toString());
         let mydata = JSON.parse(req.body.mydata);
-        let i = "s";
+        let i = req.body.image !== "false" ? req.file.originalname : mydata.image;
         let ii = i.split(".");
         let t = false;
         if(mydata.id === "") {
@@ -250,6 +319,26 @@ app.post("/like",(req,res)=> {
         fs.writeFile("./database/recetas.json",JSON.stringify(recetas),(err)=> {
             
         })
+    })
+})
+
+app.post("/login",uploadD.none(),(req,res)=> {
+    fs.readFile("./database/users.json",(err,data)=> {
+        if(err) throw err;
+        let users = JSON.parse(data.toString());
+        let username = req.body.username;
+        let password = req.body.password;
+        let t = true;
+        users.forEach(e => {
+            if(e.username === username && e.password === password) {
+                res.send(JSON.stringify(e));
+                t = false;
+            }
+        })
+
+        if(t === true) {
+            res.send("null")
+        }
     })
 })
 
