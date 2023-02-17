@@ -1,5 +1,4 @@
 import { useState,useEffect } from "react";
-import Openai from "./openai";
 import Sigin from "./pages/Sigin";
 import Login from "./pages/Login";
 import Home from "./pages/home/Home";
@@ -41,6 +40,8 @@ function App() {
       tag: <Perfil/>
     }, 
   }
+  const [page,setPage] = useState(pages.home);
+  const [loading,setLoading] = useState(false);
   async function httpRequest(method,url,data = {id:""}) {
     const headers = {
     'Content-Type': 'application/json'
@@ -128,27 +129,35 @@ function App() {
       setDatos(newdatos);
     })
   }
+
+  
   
   useEffect(()=> {
-      httpRequest("post",`${host}/descargar-materiales`,{id:"sina"}).then((r )=>{
-          datos.materiales = r;
-          httpRequest("post",`${host}/descargar-datos-usuarios`,{id:JSON.parse(localStorage.getItem("userData")).id}).then((r)=>{
-              datos.mydata = r;
-              httpRequest("post",`${host}/descargar-recetas`,{id:"sina"}).then((r)=>{
-                  let newdatos = new Datos();
-                  newdatos.materiales = datos.materiales;
-                  newdatos.mydata = datos.mydata;
-                  newdatos.recetas = r;
-                  setDatos(newdatos);
-            
-              })
-          })
-      })
+      if(localStorage.getItem("userData") !== null) {
+
+        httpRequest("post",`${host}/descargar-materiales`,{id:"sina"}).then((r )=>{
+            datos.materiales = r;
+            httpRequest("post",`${host}/descargar-datos-usuarios`,{id:JSON.parse(localStorage.getItem("userData")).id}).then((r)=>{
+                datos.mydata = r;
+                httpRequest("post",`${host}/descargar-recetas`,{id:"sina"}).then((r)=>{
+                    let newdatos = new Datos();
+                    newdatos.materiales = datos.materiales;
+                    newdatos.mydata = datos.mydata;
+                    newdatos.recetas = r;
+                    setDatos(newdatos);
+              
+                })
+            })
+        })
+      }
     
   },[]);
+
+function pageChenge(pagename) {
+  setPage(pages[pagename]);
+}
   
-  const [page,setPage] = useState(pages.home);
-  const [loading,setLoading] = useState(false);
+ 
   return (
     <AppContext.Provider value={{guardarPerfil,guardarMisMateriales,borrarReceta,httpRequest,page,pageChenge,datos,like,guardarReceta,setLoading}} >
       <div className="App">
@@ -156,22 +165,21 @@ function App() {
           <img style={{top:`${((window.innerHeight/2)-((window.innerWidth/100)*40)/2)}px`}} className="loading_gif" src="./images/loading.gif" alt="" /> : null
         }
         {/* <Openai/> */}
-  
+        
         {page.name === "home" ? <Home datos={datos} /> : null }
         {page.name === "receta" ? <Receta datos={datos} /> : null }
         {page.name === "materiales" ? <Materiales datos={datos} /> : null }
         {page.name === "perfil" ? <Perfil datos={datos} /> : null }
+        {page.name === "login" ? <Login  /> : null }
+        {page.name === "sigin" ? <Sigin  /> : null }
         {/* {page.tag} */}
-       
-        <Menu/>
+        {localStorage.getItem("userData") !== null ? <Menu/> : null}
       </div>
     </AppContext.Provider>
 
 );
 
-function pageChenge(pagename) {
-    setPage(pages[pagename]);
-}
+
 
 
 }

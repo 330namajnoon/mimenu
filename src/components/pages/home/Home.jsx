@@ -7,6 +7,14 @@ import VistaDereceta from "./vistadereceta/VistaDereceta";
 import HomeContext from "../../../contexts/homeContext";
 import AppContext from "../../../contexts/app";
 function Home({datos}) {
+    const appContext = useContext(AppContext);
+    const [recetaSeleccionada,setRecetaS] = useState(new Receta("a","a"));
+    const [vistaR,setVistaR] = useState(false);
+    const [buscar,setBuscar] = useState("");
+    const sdiComidas = datos.recetas;
+    const misComidas = datos.recetas;
+    const comidasPublicadas = datos.recetas;
+
     function Receta(name,image) {
         this.perfil = {
             username: "Sina",
@@ -23,18 +31,17 @@ function Home({datos}) {
             likes: 5,
         }
     }
-    const appContext = useContext(AppContext);
-    const [recetaSeleccionada,setRecetaS] = useState(new Receta("a","a"));
-    const [vistaR,setVistaR] = useState(false);
-    const [buscar,setBuscar] = useState("");
-    
-    const sdiComidas = datos.recetas;
-    const misComidas = datos.recetas;
-    const comidasPublicadas = datos.recetas;
+    function login() {
+        if(localStorage.getItem("userData") === null ) {
+          appContext.pageChenge("login");
+          console.log('{"id":"8bcefpjlgj","login":true}');
+        }
+      }
+   
     return(
         <HomeContext.Provider value={{visitarReceta,recetaSeleccionada,setBuscar}}>
             <div  className="home-paszamine">
-                
+                {login()}
                 {vistaR === true ? <VistaDereceta datos={recetaSeleccionada}/> : null}
                 <h1 className="menudehoy">Menu de hoy</h1>
                 <Serch buscar={buscar}/>

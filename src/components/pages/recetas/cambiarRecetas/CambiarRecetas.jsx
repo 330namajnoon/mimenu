@@ -1,6 +1,4 @@
 import "./css/cambiarRecetas.css";
-import axios from "axios";
-import { host } from "../../../../librerias";
 import recetasContext from "../../../../contexts/recetaContext";
 import appContext from "../../../../contexts/app";
 import { useContext ,useRef,useState} from "react";

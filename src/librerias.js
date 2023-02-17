@@ -332,7 +332,10 @@ function likesAndVisits(recetas = [],id = "") {
 }
 
 async function httpRequest(method,url,data = {id:""}) {
-   
-  }
+   let c = document.createElement("div");
 
-module.exports = {likesAndVisits,borrarReceta,crearRecetaID,Datos,crearId,Users,buscarMisDatos,httpRequest,host};
+   c.getBoundingClientRect()
+   
+}
+
+export {likesAndVisits,borrarReceta,crearRecetaID,Datos,crearId,Users,buscarMisDatos,httpRequest,host};

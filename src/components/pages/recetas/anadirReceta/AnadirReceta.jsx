@@ -1,13 +1,11 @@
 import "./css/anadirReceta.css";
-import axios from "axios";
-import { host } from "../../../../librerias";
 import recetasContext from "../../../../contexts/recetaContext";
 import appContext from "../../../../contexts/app";
 import { useContext ,useRef,useState} from "react";
 import AnadirMateriales from "../../../anadirMateriales/anadirMateriales";
 
 function AnadirReceta({setAnadirreceta}) {
-    const {recetaselectada,setRecetaSelectada} = useContext(recetasContext);
+    const {recetaselectada} = useContext(recetasContext);
     const {guardarReceta,setLoading,datos} = useContext(appContext);
     const laoding = useRef(null);
     const [laodingDisplay,setL] = useState(false);

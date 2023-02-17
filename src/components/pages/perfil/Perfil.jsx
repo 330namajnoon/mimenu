@@ -3,12 +3,14 @@ import {likesAndVisits} from "../../../librerias.js";
 import { useState,useContext,useRef } from "react";
 import appContext from "../../../contexts/app";
 function Perfil({datos}) {
+    const a = document.createElement("a");
+    a.href = "./index.html";
     const {setLoading,guardarPerfil} = useContext(appContext);
     const [username,setUsername] = useState(datos.mydata.username);
     const [password,setPassword] = useState(datos.mydata.password);
     const [image,setImage] = useState("./images/"+datos.mydata.image);
     const file = useRef(null);
-    const [LV,setLV] = useState(likesAndVisits(datos.recetas,datos.mydata.id));
+    const LV = likesAndVisits(datos.recetas,datos.mydata.id);
     return(
         <div className="perfil_paszamine">
             <h1 className="page_name">Perfil</h1>
@@ -29,6 +31,15 @@ function Perfil({datos}) {
                 <input onChange={(e)=> {setUsername(e.target.value)}} type="text" value={username}/>
                 <input onChange={(e)=> {setPassword(e.target.value)}} type="text" value={password}/>
             <input onClick={guardarDatos} type="button" value={"Guardar"} />
+            <a onClick={()=> {
+                let p = window.confirm("Estas segur@ ?");
+
+                if(p) {
+                    localStorage.removeItem("userData");
+                    a.click();
+                }
+
+            }} href="javascript:;">Sigin out</a>
             </div>
         </div>
     );

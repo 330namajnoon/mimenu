@@ -1,5 +1,5 @@
 import "../../../css/home.css";
-import { useState,useContext } from "react";
+import { useContext } from "react";
 import HomeContext from "../../../contexts/homeContext";
 
 function Comida({receta}) {

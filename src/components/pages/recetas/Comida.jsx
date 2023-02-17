@@ -1,5 +1,5 @@
 import "../../../css/recetas.css";
-import { useState,useContext } from "react";
+import { useContext } from "react";
 import RecetasContext from "../../../contexts/recetaContext";
 
 function Comida({receta}) {

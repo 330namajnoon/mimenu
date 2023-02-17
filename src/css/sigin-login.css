@@ -1,0 +1,107 @@
+.Login_paszamine {
+    font-family: 'Itim', cursive;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+    background-image: url(../images/home.png);
+    color: rgba(240, 248, 255, 0);
+}
+
+.Login_paszamine .page_name {
+    color: white;
+    font-weight: 100;
+    margin-top: 20px;
+    font-size: 25px;
+}
+
+.datos_paszamine {
+    display: flex;
+    flex-direction: column;
+    transition: all 1s;
+}
+
+.datos_paszamine img {
+    width: 40vw;
+    height: 40vw;
+    object-fit: cover;
+    border-radius: 20vw;
+    border: 2px solid rgb(0, 128, 255);
+    margin: 0 auto;
+    margin-bottom: 20px;
+    margin-top: 30px;
+}
+
+.datos_paszamine input {
+    width: 45vw;
+    padding: 2vw;
+    border-radius: 5px;
+    border: solid .5px rgb(0, 136, 255);
+    background-color: rgba(255, 255, 255, 0.218);
+    color: white;
+    outline: none;
+    font-family: 'Itim', cursive;
+    font-size: 15px;
+    margin-bottom: 15px;
+    box-shadow: .5px .5px 10px rgba(0, 145, 255, 0.384);
+}
+
+.datos_paszamine h6 {
+    color: white;
+    margin-bottom: 5px;
+    font-size: 3.5vw;
+    margin-left: 5px;
+    text-shadow: 1px 1px .5px rgb(0, 234, 255);
+}
+
+input[type = "button"] {
+        width: 45vw;
+        padding: 2.5vw;
+        border-radius: 5px;
+        border: solid .5px rgb(0, 136, 255);
+        background-color: rgba(255, 255, 255, 0.218);
+        color: white;
+        outline: none;
+        font-family: 'Itim', cursive;
+        font-size: 17px;
+        margin-top: 15px;
+        box-shadow: .5px .5px 10px rgba(0, 145, 255, 0.384);
+}
+
+a {
+    font-family: 'Itim', cursive;
+    margin-top: 20px;
+    font-size: 25px;
+    text-decoration: none;
+    color: blueviolet;
+}
+
+input[type = "file"] {
+    display: none;
+}
+
+.datos_paszamine p {
+    color: blueviolet;
+    margin-bottom: 20px;
+    margin: 0 auto;
+}
+
+
+.sigin-paszamine {
+    font-family: 'Itim', cursive;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+    background-image: url(../images/home.png);
+    color: rgba(240, 248, 255, 0);
+}
+
+.sigin-paszamine .page_name {
+    color: white;
+    font-weight: 100;
+    margin-top: 20px;
+    font-size: 25px;
+}
