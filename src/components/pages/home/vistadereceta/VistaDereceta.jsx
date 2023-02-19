@@ -26,6 +26,7 @@ function VistaDereceta({datos}) {
                 ))}
            </div>
            <div style={{backgroundImage: `url(./images/${datos.comida.image})`}} className="v-receta-bcg">
+                    
                     <div className="bblur">
                         <h1>{datos.comida.name}</h1>
                         <div className="khat"></div>

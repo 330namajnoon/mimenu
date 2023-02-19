@@ -7,6 +7,7 @@ import VistaDereceta from "./vistadereceta/VistaDereceta";
 import HomeContext from "../../../contexts/homeContext";
 import AppContext from "../../../contexts/app";
 function Home({datos}) {
+
     const appContext = useContext(AppContext);
     const [recetaSeleccionada,setRecetaS] = useState(new Receta("a","a"));
     const [vistaR,setVistaR] = useState(false);
@@ -31,24 +32,24 @@ function Home({datos}) {
             likes: 5,
         }
     }
-    function login() {
-        if(localStorage.getItem("userData") === null ) {
-          appContext.pageChenge("login");
-          console.log('{"id":"8bcefpjlgj","login":true}');
-        }
-      }
+    
    
     return(
         <HomeContext.Provider value={{visitarReceta,recetaSeleccionada,setBuscar}}>
-            <div  className="home-paszamine">
-                {login()}
+           
+            <div    style={{height:`${window.innerHeight}px`}}  className="home-paszamine">
+
                 {vistaR === true ? <VistaDereceta datos={recetaSeleccionada}/> : null}
                 <h1 className="menudehoy">Menu de hoy</h1>
                 <Serch buscar={buscar}/>
-                {sdiComidas.length > 0 ? <Comidas comidas={datos.buscarReceta(datos.recetas,buscar) ? datos.buscarReceta(datos.recetas,buscar) : datos.sugestionesIngredientes(datos.recetas)} titel="Sugestiones de ingredientes"/> : null}
-                {misComidas.length > 0 ? <Comidas comidas={datos.misComidas(datos.recetas)} titel="Mis comidas"/> : null}
+            
+                 {sdiComidas.length > 0 ? <Comidas comidas={datos.buscarReceta(datos.recetas,buscar) && buscar !== "" ? datos.buscarReceta(datos.recetas,buscar) : datos.sugestionesIngredientes(datos.recetas)} titel="Sugestiones de ingredientes"/> : null}
+                {datos.misComidas(datos.recetas).length > 0 ? <Comidas comidas={datos.misComidas(datos.recetas)} titel="Mis comidas"/> : null}
                 {comidasPublicadas.length > 0 ? <Comidas comidas={datos.comidasCompartidas()} titel="Comidas compartidas"/> : null}
+
             </div>
+           
+           
         </HomeContext.Provider>
     );
 

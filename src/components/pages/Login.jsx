@@ -1,12 +1,12 @@
 import "../../css/sigin-login.css";
-import {host} from "../../librerias.js";
+import {host} from "../librerias.js";
 import axios from "axios";
 import { useRef,useState,useContext } from "react";
 import appContext from "../../contexts/app";
 function Login() {
     const a = document.createElement("a");
     a.href = "./index.html";
-    const {pageChenge,setLoading} = useContext(appContext);
+    const {setPageLoad,pageChenge,setLoading} = useContext(appContext);
     const datosPaszamine = useRef(null);
     const [error,setError] = useState("");
     const [nombre,setNombre] = useState("");
@@ -28,6 +28,7 @@ function Login() {
             <input onClick={entrar} type="button" value={"Login"} />
             <a onClick={()=> {pageChenge("sigin")}} href="javascript:;">SIGIN</a>
             {setTimeout(setPaszamine,1)}
+            <img onLoad={()=>{setPageLoad(true)}} src="../../images/home.png" style={{display:"none"}} alt="" />
         </div>
     );
 

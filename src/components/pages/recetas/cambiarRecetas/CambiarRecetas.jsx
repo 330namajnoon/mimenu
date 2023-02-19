@@ -18,7 +18,7 @@ function CambiarRecetas({receta}) {
     return(
         <div  className="cambiarRecetas_paszamine">
             <span onClick={(e)=>{recetaselectada()}} class="material-symbols-rounded">
-                keyboard_return     
+                keyboard_backspace     
             </span>
             <AnadirMateriales materiales={materiales} setMateriales={setMateriales}/>
             <div className="receta_paszamine">

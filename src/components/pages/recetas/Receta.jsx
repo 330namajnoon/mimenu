@@ -13,7 +13,7 @@ function Receta({datos}) {
         <RecetasContext.Provider value={{setBuscar,recetaselectada,setRecetaSelectada}} >
             {recetaSelectada.display ? <CambiarRecetas receta={recetaSelectada}/> : null}
             {anadirreceta ? <AnadirReceta setAnadirreceta={setAnadirreceta} /> : null}
-            <div className="recetas-paszamine">
+            <div style={{height:`${window.innerHeight}px`}} className="recetas-paszamine">
                 <h1 className="page-name">Recetas</h1>
                 <Serch buscar={buscar} />
                 <span onClick={()=> {setAnadirreceta(true)}} id="recetas-anadirReceta-span" class="material-symbols-rounded">

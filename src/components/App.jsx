@@ -5,14 +5,15 @@ import Home from "./pages/home/Home";
 import Receta from "./pages/recetas/Receta";
 import Materiales from "./pages/materiales/Materiales";
 import Perfil from "./pages/perfil/Perfil"
-import {Datos,host} from "../librerias";
+import {Datos,host} from "./librerias";
 import Menu from "./menu/Menu";
 import AppContext from "../contexts/app";
 import "../css/app.css";
 import axios from "axios";
 
 function App() {
- 
+  const [pageload,setPageLoad] = useState(false);
+  const [backload,setBackload] = useState(false);
   const [datos,setDatos] = useState(new Datos());
   const pages = {
     sigin: {
@@ -42,6 +43,7 @@ function App() {
   }
   const [page,setPage] = useState(pages.home);
   const [loading,setLoading] = useState(false);
+  
   async function httpRequest(method,url,data = {id:""}) {
     const headers = {
     'Content-Type': 'application/json'
@@ -122,58 +124,105 @@ function App() {
     formdata.append("image",image? image : "false");
     axios.post(`${host}/guardar_perfil`,formdata).then((r)=> {
       setLoading(false);
-      let newdatos = new Datos();
-      newdatos.materiales = datos.materiales;
-      newdatos.mydata = r.data;
-      newdatos.recetas = datos.recetas;
-      setDatos(newdatos);
+      if(datos.materiales.length > 0) {
+        console.log(r.data.image);
+        let newdatos = new Datos();
+        newdatos.materiales = datos.materiales;
+        newdatos.mydata = r.data;
+        newdatos.recetas = datos.recetas;
+        setDatos(newdatos);
+
+      }else {
+          pageChenge("login");
+      }
     })
   }
 
   
-  
+  function promises(recetas) {
+      if(recetas) {
+
+        let imgn = 0;
+        const images = ["./images/home.png"];
+        recetas.forEach(e => {
+          images.push("./images/"+e.comida.image);
+        })
+        images.forEach((image)=> {
+            const img = new Image();
+            img.src = image;
+            img.onload = ()=> {
+              imgn++;
+              if(imgn >= recetas.length) setPageLoad(true);
+            };
+        })
+      }else {
+        const img = new Image();
+          img.src = "./images/home.png";
+          img.onload = ()=> {
+            setPageLoad(true);
+          };
+      }
+
+     
+     
+  }
   useEffect(()=> {
+  
       if(localStorage.getItem("userData") !== null) {
 
         httpRequest("post",`${host}/descargar-materiales`,{id:"sina"}).then((r )=>{
             datos.materiales = r;
             httpRequest("post",`${host}/descargar-datos-usuarios`,{id:JSON.parse(localStorage.getItem("userData")).id}).then((r)=>{
-                datos.mydata = r;
-                httpRequest("post",`${host}/descargar-recetas`,{id:"sina"}).then((r)=>{
-                    let newdatos = new Datos();
-                    newdatos.materiales = datos.materiales;
-                    newdatos.mydata = datos.mydata;
-                    newdatos.recetas = r;
-                    setDatos(newdatos);
-              
-                })
+              datos.mydata = r;
+              httpRequest("post",`${host}/descargar-recetas`,{id:"sina"}).then((r)=>{
+                let newdatos = new Datos();
+                newdatos.materiales = datos.materiales;
+                newdatos.mydata = datos.mydata;
+                newdatos.recetas = r;
+                promises(r);
+                setDatos(newdatos);
+                
+              })
             })
-        })
+          })
+        }else {
+          promises();
+          pageChenge("login");
       }
     
   },[]);
 
-function pageChenge(pagename) {
-  setPage(pages[pagename]);
-}
   
+
+  function pageChenge(pagename) {
+    setPage(pages[pagename]);
+  }
+
  
   return (
-    <AppContext.Provider value={{guardarPerfil,guardarMisMateriales,borrarReceta,httpRequest,page,pageChenge,datos,like,guardarReceta,setLoading}} >
-      <div className="App">
+    <AppContext.Provider value={{setPageLoad,guardarPerfil,guardarMisMateriales,borrarReceta,httpRequest,page,pageChenge,datos,like,guardarReceta,setLoading}} >
+      <div  className="App">
         {loading ? 
           <img style={{top:`${((window.innerHeight/2)-((window.innerWidth/100)*40)/2)}px`}} className="loading_gif" src="./images/loading.gif" alt="" /> : null
         }
         {/* <Openai/> */}
+        {!pageload && <img style={{top:`${((window.innerHeight/2)-((window.innerWidth/100)*40)/2)}px`}} className="loading_gif" src="./images/loading.gif" alt="" />}
+        {pageload && window.innerWidth < window.innerHeight/1.5 ? (
+          <>
+          {page.name === "login" ? <Login  /> : null }
+          {page.name === "sigin" ? <Sigin  /> : null }
+          {page.name === "home" ? <Home datos={datos} /> : null }
+          {page.name === "receta" ? <Receta datos={datos} /> : null }
+          {page.name === "materiales" ? <Materiales datos={datos} /> : null }
+          {page.name === "perfil" ? <Perfil datos={datos} /> : null }
+          {localStorage.getItem("userData") !== null ? <Menu/> : null}
+          </>
+        ) : <div className="pcerror-div">
+            <h1 className="pcerror">Lo siento, esta aplicación solo es compatible con dispositivos móviles.</h1>
+            <img style={{top:`${((window.innerHeight/2)-((window.innerWidth/100)*40)/2)}px`}} className="loading_gif" src="./images/loading.gif" alt="" />
+        </div> }
+       
         
-        {page.name === "home" ? <Home datos={datos} /> : null }
-        {page.name === "receta" ? <Receta datos={datos} /> : null }
-        {page.name === "materiales" ? <Materiales datos={datos} /> : null }
-        {page.name === "perfil" ? <Perfil datos={datos} /> : null }
-        {page.name === "login" ? <Login  /> : null }
-        {page.name === "sigin" ? <Sigin  /> : null }
-        {/* {page.tag} */}
-        {localStorage.getItem("userData") !== null ? <Menu/> : null}
       </div>
     </AppContext.Provider>
 

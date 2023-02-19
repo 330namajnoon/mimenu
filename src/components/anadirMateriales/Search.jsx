@@ -8,7 +8,7 @@ function Search({buscar,setBuscar}) {
             <span id="search" class="material-symbols-rounded">
                 search
             </span>
-            <input onChange={(e)=> {setBuscar(e.target.value)}} type="text"  placeholder="Buscar " value={buscar}/>
+            <input onChange={(e)=> {setBuscar(e.target.value)}} type="text"  placeholder="Agragar material" value={buscar}/>
         </div>
     );
 }

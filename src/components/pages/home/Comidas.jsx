@@ -25,14 +25,14 @@ function Comidas({comidas,titel}) {
         <>
         <h1 className="titles">{titel}</h1>
         <div onTouchStart={()=>{
-                d.current.style.display = "none";
-                i.current.style.display = "none";
+                // d.current.style.display = "none";
+                // i.current.style.display = "none";
             }} onTouchEnd={()=> {
-                d.current.style.display = "flex";
-                i.current.style.display = "flex";
-                let scrollv = JSON.parse(JSON.stringify(scrollValue));
-                scrollv.tv = paszamine.current.scrollLeft;
-                setScroolValue(scrollv);
+                // d.current.style.display = "flex";
+                // i.current.style.display = "flex";
+                // let scrollv = JSON.parse(JSON.stringify(scrollValue));
+                // scrollv.tv = paszamine.current.scrollLeft;
+                // setScroolValue(scrollv);
             }} style={{transition: "all 1s"}}  ref={paszamine} className="recetas-bcg">
             
             {comidas.map(e =>(
@@ -41,12 +41,12 @@ function Comidas({comidas,titel}) {
 
             <div style={{minWidth:"200px",height:"95%"}}></div>  
 
-            <span ref={i} style={{left:`${15}px`}} id="i" onClick={()=>{scrullSet("i",4)}} class="material-symbols-rounded">
+            {/* <span ref={i} style={{left:`${15}px`}} id="i" onClick={()=>{scrullSet("i",4)}} class="material-symbols-rounded">
                 arrow_circle_left
             </span>
             <span ref={d} style={{left:`${window.innerWidth - 40}px`}} id="d" onClick={()=>{scrullSet("d",4)}} class="material-symbols-rounded">
                 arrow_circle_right
-            </span> 
+            </span>  */}
 
         </div>
         </> 

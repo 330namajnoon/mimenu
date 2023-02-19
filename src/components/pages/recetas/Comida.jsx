@@ -12,7 +12,7 @@ function Comida({receta}) {
             recetaselectada(true,receta);
     
             }} style={{backgroundImage: `url(./images/${receta.comida.image})`}} className="recetas-receta-bcg">
-          
+            
             <div className="visits-likes">
                 <span class="material-symbols-rounded">
                     visibility

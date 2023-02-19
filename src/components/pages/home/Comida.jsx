@@ -12,7 +12,7 @@ function Comida({receta}) {
             visitarReceta(true,receta);
     
             }} style={{backgroundImage: `url(./images/${receta.comida.image})`}} className="receta-bcg">
-          
+            
             <div className="visits-likes">
                 <span class="material-symbols-rounded">
                     visibility

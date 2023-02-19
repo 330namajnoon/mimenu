@@ -3,6 +3,20 @@
     padding: 0;
 }
 
+.pcerror-div {
+    display: flex;
+    flex-direction: row;
+
+}
+.pcerror {
+    color: blueviolet;
+    font-family: 'Itim', cursive;
+    font-size: 3vw;
+    margin: 10vh auto;
+    font-weight: 600;
+
+}
+
 .loading_gif {
     position: absolute;
     z-index: 10000;

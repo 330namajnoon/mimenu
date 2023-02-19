@@ -1,5 +1,5 @@
 import "./css/perfil.css";
-import {likesAndVisits} from "../../../librerias.js";
+import {likesAndVisits} from "../../librerias.js";
 import { useState,useContext,useRef } from "react";
 import appContext from "../../../contexts/app";
 function Perfil({datos}) {
@@ -12,7 +12,7 @@ function Perfil({datos}) {
     const file = useRef(null);
     const LV = likesAndVisits(datos.recetas,datos.mydata.id);
     return(
-        <div className="perfil_paszamine">
+        <div    style={{height:`${window.innerHeight}px`}} className="perfil_paszamine">
             <h1 className="page_name">Perfil</h1>
             <div className="perfil_datos_paszamine">
                 <input onChange={(e)=> {chengeImage(e.target.files[0])}} ref={file} type="file" />
@@ -58,8 +58,11 @@ function Perfil({datos}) {
         let newdata = datos.mydata;
         newdata.username = username;
         newdata.password = password;
+        guardarPerfil(newdata,file.current.files.length > 0 ? file.current.files[0] : false);
         setTimeout(()=> {
-            guardarPerfil(newdata,file.current.files.length > 0 ? file.current.files[0] : false);
+            let a = document.createElement("a");
+            a.href = "./index.html";
+            a.click();
         },2000)
     }
 }
