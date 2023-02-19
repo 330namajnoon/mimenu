@@ -12,6 +12,7 @@ import "../css/app.css";
 import axios from "axios";
 
 function App() {
+  const height = window.innerHeight;
   const [pageload,setPageLoad] = useState(false);
   const [backload,setBackload] = useState(false);
   const [datos,setDatos] = useState(new Datos());
@@ -200,7 +201,7 @@ function App() {
 
  
   return (
-    <AppContext.Provider value={{setPageLoad,guardarPerfil,guardarMisMateriales,borrarReceta,httpRequest,page,pageChenge,datos,like,guardarReceta,setLoading}} >
+    <AppContext.Provider value={{height,setPageLoad,guardarPerfil,guardarMisMateriales,borrarReceta,httpRequest,page,pageChenge,datos,like,guardarReceta,setLoading}} >
       <div  className="App">
         {loading ? 
           <img style={{top:`${((window.innerHeight/2)-((window.innerWidth/100)*40)/2)}px`}} className="loading_gif" src="./images/loading.gif" alt="" /> : null
@@ -217,10 +218,11 @@ function App() {
           {page.name === "perfil" ? <Perfil datos={datos} /> : null }
           {localStorage.getItem("userData") !== null ? <Menu/> : null}
           </>
-        ) : <div className="pcerror-div">
+        ) : null}
+        { window.innerWidth > window.innerHeight/1.5 ? <div className="pcerror-div">
             <h1 className="pcerror">Lo siento, esta aplicación solo es compatible con dispositivos móviles.</h1>
             <img style={{top:`${((window.innerHeight/2)-((window.innerWidth/100)*40)/2)}px`}} className="loading_gif" src="./images/loading.gif" alt="" />
-        </div> }
+        </div> : null}
        
         
       </div>

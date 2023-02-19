@@ -5,14 +5,14 @@ import appContext from "../../../contexts/app";
 function Perfil({datos}) {
     const a = document.createElement("a");
     a.href = "./index.html";
-    const {setLoading,guardarPerfil} = useContext(appContext);
+    const {setLoading,guardarPerfil,height} = useContext(appContext);
     const [username,setUsername] = useState(datos.mydata.username);
     const [password,setPassword] = useState(datos.mydata.password);
     const [image,setImage] = useState("./images/"+datos.mydata.image);
     const file = useRef(null);
     const LV = likesAndVisits(datos.recetas,datos.mydata.id);
     return(
-        <div    style={{height:`${window.innerHeight}px`}} className="perfil_paszamine">
+        <div    style={{height:`${height}px`}} className="perfil_paszamine">
             <h1 className="page_name">Perfil</h1>
             <div className="perfil_datos_paszamine">
                 <input onChange={(e)=> {chengeImage(e.target.files[0])}} ref={file} type="file" />

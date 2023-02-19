@@ -7,7 +7,6 @@ import VistaDereceta from "./vistadereceta/VistaDereceta";
 import HomeContext from "../../../contexts/homeContext";
 import AppContext from "../../../contexts/app";
 function Home({datos}) {
-
     const appContext = useContext(AppContext);
     const [recetaSeleccionada,setRecetaS] = useState(new Receta("a","a"));
     const [vistaR,setVistaR] = useState(false);
@@ -37,7 +36,7 @@ function Home({datos}) {
     return(
         <HomeContext.Provider value={{visitarReceta,recetaSeleccionada,setBuscar}}>
            
-            <div    style={{height:`${window.innerHeight}px`}}  className="home-paszamine">
+            <div    style={{height:`${appContext.height}px`}}  className="home-paszamine">
 
                 {vistaR === true ? <VistaDereceta datos={recetaSeleccionada}/> : null}
                 <h1 className="menudehoy">Menu de hoy</h1>
