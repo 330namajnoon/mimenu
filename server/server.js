@@ -84,7 +84,7 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 // app.use("/node_modules",express.static(__dirname + "/node_modules"));
 app.use(express.static(pdp));
-app.use(cors())
+// app.use(cors())
 const server = http.createServer(app);
 const io = new Server(server,{
     cors:{
@@ -138,7 +138,7 @@ app.post("/descargar-recetas",uploadD.none(),(req,res)=> {
 function imageUload() {
     let upload = multer({storage: multer.diskStorage({
         destination:(req,file,cd)=> {
-            cd(null,"../public/images");
+            cd(null,"./build/images");
         },
         filename:(req,file,cd)=> {
             cd(null,file.originalname);   
@@ -191,7 +191,7 @@ app.post("/guardar_receta_I",imageUload().single('image'),(req,res)=> {
         if(err) throw err;
         if(t) {
             recetas.push(receta);
-            fs.rename(req.file.path,"../public/images/"+newImageName,(err)=> {
+            fs.rename(req.file.path,"./build/images/"+newImageName,(err)=> {
                 if(err) throw err;
                 console.log("saved name");
             })
@@ -201,6 +201,10 @@ app.post("/guardar_receta_I",imageUload().single('image'),(req,res)=> {
                     recetas[index] = receta;
                 }
             }
+            fs.rename(req.file.path,"./build/images/"+newImageName,(err)=> {
+                if(err) throw err;
+                console.log("saved name");
+            })
         }
         fs.writeFile("./database/recetas.json",JSON.stringify(recetas),(err)=> {
             if(err) throw err;
@@ -252,11 +256,30 @@ app.post("/guardar_perfil",imageUload().single("image") ? imageUload().single("i
         }
         switch (req.body.image) {
             case "false":
-                
+                fs.readFile("./database/recetas.json",(err,data) => {
+                    if(err) throw err;
+                    let recetas = JSON.parse(data.toString());
+                    for (let index = 0; index < recetas.length; index++) {
+                        if(recetas[index].perfil.id === mydata.id) recetas[index].perfil = mydata;
+                    }
+                    fs.writeFile("./database/recetas.json",JSON.stringify(recetas),(err)=> {
+                        console.log("perfiles de recetas se han cambiado");
+                    })
+                })
                 break;
                 
             default:
-                fs.rename(req.file.path,"../public/images/"+imagename,(err)=> {
+                fs.readFile("./database/recetas.json",(err,data) => {
+                    if(err) throw err;
+                    let recetas = JSON.parse(data.toString());
+                    for (let index = 0; index < recetas.length; index++) {
+                        if(recetas[index].perfil.id === mydata.id) recetas[index].perfil = mydata;
+                    }
+                    fs.writeFile("./database/recetas.json",JSON.stringify(recetas),(err)=> {
+                        console.log("perfiles de recetas se han cambiado");
+                    })
+                })
+                fs.rename(req.file.path,"./build/images/"+imagename,(err)=> {
                     if(err) throw err;
                     console.log("la foto se ha guardado");
                 })
@@ -379,86 +402,5 @@ app.post("/guardar_materiales",uploadD.none(),(req,res)=> {
 server.listen(port,()=> {
     console.log(`server is op un port ${port}!`);
 
-    // fs.readFile("./database/recetas.json",(err,data)=> {
-      
-    //     fs.readFile("./database/materiales.json",(err,mat)=>{
-    //         let materiales = JSON.parse(mat.toString());
-
-    //         let newMateriales  = [
-    //             { id: 1, name: "Papas" },
-    //             { id: 2, name: "Cebolla" },
-    //             { id: 3, name: "Huevos" },
-    //             { id: 4, name: "Aceite de oliva" },
-    //             { id: 5, name: "Sal" },
-    //             { id: 6, name: "Pimienta negra" }
-    //           ]
-    //         newMateriales.forEach(e => {
-    //             let d = false;
-    //             materiales.forEach(ee => {
-    //                 if(ee.name === e.name)  d = true;
-    //             })
-    //             if(d === false ) {
-    //                 e.id = materiales.length+1;
-    //                 materiales.push(e);
-    //             }    
-    //         })
     
-    //         fs.writeFile("./database/materiales.json",JSON.stringify(materiales),(err)=> {
-    //             function buscarm(mismtr) {
-    //                 let matriales = [];
-    //                 mismtr.forEach(e => {
-    //                     materiales.forEach(ee => {
-    //                         if(ee.name === e.name) matriales.push(ee.id);
-    //                     })
-    //                 });
-    //                 return matriales;
-    //             }
-    //             if(err) throw err;
-    //             let recetas = JSON.parse(data.toString());
-    //             let newreceta  = {
-    //                 perfil: {
-    //                   username: "Chef Luis",
-    //                   id: "13e5ds",
-    //                   image: "chef_luis.jpg"
-    //                 },
-    //                 comida: {
-    //                   id: "receta14",
-    //                   name: "Tortilla de Papas",
-    //                   materiales: buscarm([
-    //                     { id: 1, name: "Papas" },
-    //                     { id: 2, name: "Cebolla" },
-    //                     { id: 3, name: "Huevos" },
-    //                     { id: 4, name: "Aceite de oliva" },
-    //                     { id: 5, name: "Sal" },
-    //                     { id: 6, name: "Pimienta negra" }
-    //                   ]),
-    //                   receta: "Pele y corte las papas y la cebolla en rodajas finas. Caliente aceite de oliva en una sartén y fría las papas y la cebolla a fuego medio hasta que estén doradas y crujientes. Batir los huevos en un tazón y sazonarlos con sal y pimienta negra al gusto. Agregue las papas y la cebolla a los huevos y mezcle bien. Caliente un poco más de aceite de oliva en la sartén y agregue la mezcla de huevo. Cocine a fuego medio-bajo durante unos 10 minutos o hasta que la parte inferior esté dorada. Voltee la tortilla utilizando un plato y cocine la otra cara hasta que esté dorada. Sirva caliente.",
-    //                   image: "tortilla_papas.jpg",
-    //                   visits: [],
-    //                   likes: []
-    //                 }
-    //               }
-                  
-    //             recetas.push(newreceta);
-        
-    //             fs.writeFile("./database/recetas.json",JSON.stringify(recetas),(err)=> {
-            
-    //             })
-    //         })
-           
-    //     })
-       
-    // })    
-
-    
-
-    //     fs.writeFile("./database/materiales.json",JSON.stringify(materiales),(err)=> {
-    
-    //     })
-    // })
-
-
-
-
-   
 })

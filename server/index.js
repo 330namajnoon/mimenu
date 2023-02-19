@@ -11,7 +11,7 @@ guardarMaterialesButton.addEventListener("click",(e)=> {
     let http = new XMLHttpRequest();
     http.open("POST","/guardar_materiales",true);
     http.onreadystatechange = function() {
-        if(http.status == 200 && http.readyState == 4) {
+        if(http.status === 200 && http.readyState == 4) {
             alert("Se ha guardado");
         }
     }
