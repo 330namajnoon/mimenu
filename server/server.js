@@ -1,3 +1,16 @@
+function buscarMateriales(ids = [],materiales_) {
+    let materiales = [];
+    ids.forEach(e => {
+        materiales_.forEach(ee => {
+            if(ee.id === e) {
+                materiales.push(ee);
+            }
+        })
+    })
+
+    return materiales;
+}
+
 function crearId(users = [{id:"asd10"}],num = 10) {
     let ids = "abcdefghijklnmopqrstuvwxyz123456789";
     let d = true;
@@ -166,7 +179,27 @@ app.post("/guardar_receta",uploadD.none(),(req,res)=> {
         }
         fs.writeFile("./database/recetas.json",JSON.stringify(recetas),(err)=> {
             if(err) throw err;
-            res.send(JSON.stringify(recetas));
+            fs.readFile("./database/materiales.json", (err, data) => {
+                if (err) throw err;
+                let materiales = JSON.parse(data.toString());
+                let newMateriales = buscarMateriales(receta.comida.materiales,materiales);
+                newMateriales.forEach(e => {
+                    let d = false;
+                    materiales.forEach(ee => {
+                        if (ee.name.toLowerCase() == e.name.toLowerCase()) d = true;
+                    })
+                    if (d == false) {
+                        let newmaterial = e;
+                        newmaterial.name = newmaterial.name.charAt(0).toUpperCase() + newmaterial.name.slice(1);
+                        newmaterial.id = materiales.length + 1;
+                        materiales.push(e);
+                    }
+                })
+                fs.writeFile("./database/materiales.json", JSON.stringify(materiales), (err) => {
+                    if (err) throw err;
+                    res.send(JSON.stringify(recetas));
+                })
+            })
         })
     })
 
@@ -208,7 +241,28 @@ app.post("/guardar_receta_I",imageUload().single('image'),(req,res)=> {
         }
         fs.writeFile("./database/recetas.json",JSON.stringify(recetas),(err)=> {
             if(err) throw err;
-            res.send(JSON.stringify(recetas));
+            fs.readFile("./database/materiales.json", (err, data) => {
+                if (err) throw err;
+                let materiales = JSON.parse(data.toString());
+                let newMateriales = buscarMateriales(receta.comida.materiales,materiales);
+                newMateriales.forEach(e => {
+                    let d = false;
+                    materiales.forEach(ee => {
+                        if (ee.name.toLowerCase() == e.name.toLowerCase()) d = true;
+                    })
+                    if (d == false) {
+                        let newmaterial = e;
+                        newmaterial.name = newmaterial.name.charAt(0).toUpperCase() + newmaterial.name.slice(1);
+                        newmaterial.id = materiales.length + 1;
+                        materiales.push(e);
+                    }
+                })
+                fs.writeFile("./database/materiales.json", JSON.stringify(materiales), (err) => {
+                    if (err) throw err;
+                    res.send(JSON.stringify(recetas));
+                })
+            })
+            
         })
     })
 })

@@ -1,3 +1,16 @@
+function buscarMateriales(ids = [],materiales_) {
+    let materiales = [];
+    ids.forEach(e => {
+        materiales_.forEach(ee => {
+            if(ee.id === e) {
+                materiales.push(ee);
+            }
+        })
+    })
+
+    return materiales;
+}
+
 function crearId(users = [{ id: "asd10" }], num = 10) {
     let ids = "abcdefghijklnmopqrstuvwxyz123456789";
     let d = true;
@@ -168,6 +181,7 @@ app.post("/guardar_receta", uploadD.none(), (req, res) => {
         fs.writeFile("./database/recetas.json", JSON.stringify(recetas), (err) => {
             if (err) throw err;
             res.send(JSON.stringify(recetas));
+            
         })
     })
 
@@ -178,6 +192,7 @@ app.post("/guardar_receta_I", imageUload().single('image'), (req, res) => {
     fs.readFile("./database/recetas.json", (err, data) => {
         let recetas = JSON.parse(data.toString());
         let receta = JSON.parse(req.body.receta);
+    
         let t = false;
         if (receta.comida.id === "") {
             receta.comida.id = miLibreria.crearRecetaID(recetas, 10);
