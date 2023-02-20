@@ -11,6 +11,7 @@ import AppContext from "../contexts/app";
 import "../css/app.css";
 import axios from "axios";
 
+
 function App() {
   const height = window.innerHeight;
   const [pageload,setPageLoad] = useState(false);
@@ -103,6 +104,10 @@ function App() {
         newdatos.mydata = datos.mydata;
         newdatos.recetas = r.data;
         setDatos(newdatos);
+        let a = document.createElement("a");
+        a.href = "./index.html";
+        a.click();
+        
       })
   }
 
@@ -142,7 +147,7 @@ function App() {
   
   function promises(recetas) {
       if(recetas) {
-
+        let l = recetas.length;
         let imgn = 0;
         const images = ["./images/home.png"];
         recetas.forEach(e => {
@@ -151,9 +156,15 @@ function App() {
         images.forEach((image)=> {
             const img = new Image();
             img.src = image;
+            
+            img.onerror = ()=> {
+              l--;
+              if(imgn >= l) setPageLoad(true);
+            }
             img.onload = ()=> {
               imgn++;
-              if(imgn >= recetas.length) setPageLoad(true);
+              if(imgn >= l) setPageLoad(true);
+
             };
         })
       }else {

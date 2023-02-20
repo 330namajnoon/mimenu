@@ -9,7 +9,13 @@ function AnadirMateriales({materiales,setMateriales}) {
     return(
         <div className="anadir-materiales-paszamine">
             
-            <Search buscar={buscar} setBuscar={setBuscar}/>
+            <Search materialesR={materiales} 
+            setMateriales={setMateriales} 
+            add={buscarMaterial(datos.materiales,buscar).length <= 0 && buscar !== "" ? true : false} 
+            buscar={buscar} 
+            setBuscar={setBuscar}
+            />
+            
             <div className="nuevas_materiales-paszamine" >
                 {buscarMaterial(datos.materiales,buscar).length > 0 ?
                     <BuscarMaterial setBuscar={setBuscar} materiales={buscarMaterial(datos.materiales,buscar)} materialesR={materiales} setMateriales={setMateriales}/>
@@ -50,6 +56,8 @@ function AnadirMateriales({materiales,setMateriales}) {
                 if(e.name.toLowerCase().includes(name.toLowerCase())&&t) newmateriales.push(e);
             })
         }
+
+        
         return newmateriales;
     }
 }

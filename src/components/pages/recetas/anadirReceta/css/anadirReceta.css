@@ -16,6 +16,12 @@
     padding-bottom: 50px;
 }
 
+.cambiarRecetas_paszamine .error {
+    color: blueviolet;
+    margin-bottom: 10px;
+    font-size: 5vw;
+}
+
 .cambiarRecetas_paszamine .receta_paszamine {
     width: 100%;
     display: flex;

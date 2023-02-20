@@ -14,7 +14,7 @@ function AnadirReceta({setAnadirreceta}) {
     const image = useRef(null);
     const recetaa = useRef(null);
     const [nombredelacomida,setNombre] = useState("");
-    
+    const [error,setError] = useState("");
     return(
         <div  className="cambiarRecetas_paszamine">
             <span onClick={(e)=>{setAnadirreceta(false)}} class="material-symbols-rounded">
@@ -24,7 +24,7 @@ function AnadirReceta({setAnadirreceta}) {
             <div className="receta_paszamine">
                 <div className="image_paszamine">
                     <input onChange={(e)=>{guardarImage(e.target.files[0])}} ref={file} style={{display:"none"}} type="file" />
-
+                    <p className="error">{error}</p>
                     <img ref={image} onClick={(e)=>{file.current.click()}} src={`./images/pulsar.jpg`} alt="" />
                     {
                         laodingDisplay ?  
@@ -72,11 +72,18 @@ function AnadirReceta({setAnadirreceta}) {
         newreceta.comida.image = "";
         newreceta.comida.visits = [];
         newreceta.comida.likes = [];
-        setLoading(true);
-        setTimeout(()=>{
-            setAnadirreceta(false);
-            guardarReceta(newreceta,file.current.files[0]);
-        },2000)
+        if(file.current.files.length <= 0) setError("Porfavor elige una foto!");
+        if(nombredelacomida === "") setError("Porfavor escribe nombre de tu receta!");
+        if(recetaa.current.value === "") setError("Porfavor escribe tu receta!");
+        if(materiales.length <= 0) setError("Porfavor agraga materiales!");
+
+        if(file.current.files.length > 0 && nombredelacomida !== "" && recetaa.current.value !== "" && materiales.length > 0) {
+            setLoading(true);
+            setTimeout(()=>{
+                setAnadirreceta(false);
+                guardarReceta(newreceta,file.current.files[0]);
+            },2000)
+        }
     }
 }
 
