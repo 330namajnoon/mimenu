@@ -10,6 +10,9 @@ import Menu from "./menu/Menu";
 import AppContext from "../contexts/app";
 import "../css/app.css";
 import axios from "axios";
+import { io } from "socket.io-client";
+
+const socket = io(host);
 
 
 function App() {
@@ -89,6 +92,7 @@ function App() {
   }
 
   function guardarReceta(receta = {},file) {
+
     let formdata = new FormData();
       if(file) {
         formdata.append("image",file);
@@ -99,6 +103,7 @@ function App() {
             if((p.loaded/p.total*100) === 100) setLoading(false);
           }
       }).then((r)=> {
+        socket.emit("realizar_recetas");
         let newdatos = new Datos();
         newdatos.materiales = datos.materiales;
         newdatos.mydata = datos.mydata;
@@ -115,6 +120,7 @@ function App() {
       let formdata = new FormData();
       formdata.append("id",id);
       axios.post(`${host}/borrar_receta`,formdata).then((r)=> {
+        socket.emit("realizar_recetas");
         setLoading(false);
         let newdatos = new Datos();
         newdatos.materiales = datos.materiales;
@@ -129,6 +135,7 @@ function App() {
     formdata.append("mydata",JSON.stringify(mydata));
     formdata.append("image",image? image : "false");
     axios.post(`${host}/guardar_perfil`,formdata).then((r)=> {
+      socket.emit("realizar_recetas");
       setLoading(false);
       if(datos.materiales.length > 0) {
         console.log(r.data.image);
@@ -204,6 +211,29 @@ function App() {
     
   },[]);
 
+
+  useEffect(()=> {
+      socket.on("realizar_recetas",()=> {
+          const formdata = new FormData();
+          formdata.append("id",datos.mydata.id);
+          axios.post(`${host}/realizar_recetas`,formdata).then((r)=> {
+              const nuevosdatos = new Datos();
+              nuevosdatos.materiales = r.data.materiales;
+              nuevosdatos.recetas = r.data.recetas;
+              nuevosdatos.mydata = datos.mydata;
+              setDatos(nuevosdatos);
+          })
+      })
+      return socket.off("realizar_recetas",()=> {
+        const formdata = new FormData();
+        formdata.append("id",datos.mydata.id);
+        axios.post(`${host}/realizar_recetas`,formdata).then((r)=> {
+
+            console.log(r.data);
+        })
+      });
+  },[])
+
   
 
   function pageChenge(pagename) {
@@ -212,7 +242,7 @@ function App() {
 
  
   return (
-    <AppContext.Provider value={{height,setPageLoad,guardarPerfil,guardarMisMateriales,borrarReceta,httpRequest,page,pageChenge,datos,like,guardarReceta,setLoading}} >
+    <AppContext.Provider value={{setDatos,height,setPageLoad,guardarPerfil,guardarMisMateriales,borrarReceta,httpRequest,page,pageChenge,datos,like,guardarReceta,setLoading}} >
       <div  className="App">
         {loading ? 
           <img style={{top:`${((window.innerHeight/2)-((window.innerWidth/100)*40)/2)}px`}} className="loading_gif" src="./images/loading.gif" alt="" /> : null

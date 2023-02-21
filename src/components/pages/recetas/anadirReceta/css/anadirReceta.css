@@ -50,6 +50,30 @@
     top: 5px;
 }
 
+.cambiarRecetas_paszamine .anadirMateriales_search_bcg {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.cambiarRecetas_paszamine .anadirMateriales_search_bcg input{
+    width: 75%;
+    padding-left: 4vw;
+    margin: 0;
+}
+
+.cambiarRecetas_paszamine #search {
+    position: relative;
+    top: 0;
+    left: 0;
+    margin-left: 2vw;
+}
+
+.cambiarRecetas_paszamine #add {
+    margin-right: 4vw;
+}
+
 .dato_paszamine {
    
     height: auto;

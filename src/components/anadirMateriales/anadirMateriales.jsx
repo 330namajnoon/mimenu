@@ -1,10 +1,12 @@
 import "./css/anadirMateriales.css";
 import appContext from "../../contexts/app";
 import BuscarMaterial from "./BuscarMaterial";
-import { useContext ,useRef,useState} from "react";
+import { useContext ,useState} from "react";
 import Search from "./Search";
+import {host,Datos} from "../librerias.js"
+import axios from "axios";
 function AnadirMateriales({materiales,setMateriales}) {
-    const {datos} = useContext(appContext);
+    const {datos,setLoading,setDatos} = useContext(appContext);
     const [buscar,setBuscar] = useState("");
     return(
         <div className="anadir-materiales-paszamine">
@@ -14,6 +16,7 @@ function AnadirMateriales({materiales,setMateriales}) {
             add={buscarMaterial(datos.materiales,buscar).length <= 0 && buscar !== "" ? true : false} 
             buscar={buscar} 
             setBuscar={setBuscar}
+            agragarMaterial={agragarMaterial}
             />
             
             <div className="nuevas_materiales-paszamine" >
@@ -59,6 +62,31 @@ function AnadirMateriales({materiales,setMateriales}) {
 
         
         return newmateriales;
+    }
+
+    function anadirMaterial(material) {
+        let newmateriales = materiales;
+        newmateriales.push(material.id);
+        return newmateriales;
+    }
+
+    function agragarMaterial() {
+        setLoading(true);
+        let formdata = new FormData();
+        formdata.append("newmaterial",JSON.stringify([{id:datos.materiales.length,name:buscar.charAt(0).toUpperCase() + buscar.slice(1)}]))
+        axios.post(`${host}/guardar_materiales`,formdata).then((r)=> {
+            if(r) {
+                setLoading(false);
+                let newdatos = new Datos();
+                newdatos.materiales = r.data.materiales;
+                newdatos.mydata = datos.mydata;
+                newdatos.recetas = datos.recetas;
+                let newmaterial = r.data.newMateriales[0];
+                setDatos(newdatos);
+                setMateriales(anadirMaterial(newmaterial));
+                setBuscar("");
+            }
+        })
     }
 }
 

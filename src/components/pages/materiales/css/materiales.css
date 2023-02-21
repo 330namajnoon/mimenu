@@ -31,6 +31,22 @@
     margin-top: 20px;
 }
 
+.mismateriales_paszamine #search {
+    margin-left: 2vw;
+}
+
+.mismateriales_paszamine #add {
+    color: #ffffff;
+    margin: 0;
+}
+
+.mismateriales_paszamine input[type = "text"] {
+    width: 75%;
+    margin: 0;
+    padding-left: 3vw;
+    font-size: 4vw;
+}
+
 .mismateriales_paszamine .materiales_paszamine_ {
     display: flex;
     align-items: center;
