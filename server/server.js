@@ -192,6 +192,7 @@ app.post("/guardar_receta_I",imageUload().single('image'),(req,res)=> {
     fs.readFile("./database/recetas.json",(err,data)=> {
         let recetas = JSON.parse(data.toString());
         let receta = JSON.parse(req.body.receta);
+        receta.comentarios = [];
         let t = false;
         if(receta.comida.id === "") {
             receta.comida.id = miLibreria.crearRecetaID(recetas,10);

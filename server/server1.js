@@ -193,7 +193,7 @@ app.post("/guardar_receta_I", imageUload().single('image'), (req, res) => {
     fs.readFile("./database/recetas.json", (err, data) => {
         let recetas = JSON.parse(data.toString());
         let receta = JSON.parse(req.body.receta);
-    
+        receta.comentarios = [];
         let t = false;
         if (receta.comida.id === "") {
             receta.comida.id = miLibreria.crearRecetaID(recetas, 10);
@@ -383,15 +383,23 @@ app.post("/login", uploadD.none(), (req, res) => {
     })
 })
 
-app.get("/sigin", (req, res) => {
-    fs.readFile("./database/users.json", (err, data) => {
-        if (err) throw err;
-        let users = JSON.parse(data.toString());
-        let newId = miLibreria.crearId(users, 10);
-        users.push(new miLibreria.Users(newId, req.query.username, req.query.password, req.query.image));
-        fs.writeFile("./database/users.json", JSON.stringify(users), (err) => {
-            if (err) throw err;
-            console.log("user saved")
+app.post("/guardar_comentario",uploadD.none(),(req,res)=> {
+    const msg = JSON.parse(req.body.msg);
+    const id = req.body.id;
+
+    fs.readFile("./database/recetas.json",(err,data)=> {
+        if(err) throw err;
+        const recetas = JSON.parse(data.toString());
+
+        for (let index = 0; index < recetas.length; index++) {
+            if(recetas[index].comida.id === id) {
+                recetas[index].comida.comentarios.push(msg);
+            }
+            
+        }
+
+        fs.writeFile("./database/recetas.json",JSON.stringify(recetas),(err)=> {
+            res.send(JSON.stringify(recetas));
         })
     })
 })
