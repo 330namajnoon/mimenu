@@ -1,10 +1,10 @@
 const host = "http://localhost:4000";
 // const host = "";
 
-function Datos() {
-    this.materiales = [];
-    this.mydata = false;
-    this.recetas = [];
+function Datos(materiales = [],mydata= false,recetas = []) {
+    this.materiales = materiales;
+    this.mydata = mydata;
+    this.recetas = recetas;
 }
 function buscarMisDatos(users = [],id) {
     let mydata;
@@ -360,4 +360,14 @@ async function httpRequest(method,url,data = {id:""}) {
    
 }
 
-export {likesAndVisits,borrarReceta,crearRecetaID,Datos,crearId,Users,buscarMisDatos,httpRequest,host};
+function Msg(perfil = {},msg) {
+    let date = new Date();
+    let id = perfil.id;
+    let username = perfil.username;
+    let image = perfil.image;
+    this.perfil = {id,username,image};
+    this.msg = msg;
+    this.date = date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear()+" "+" "+date.getHours()+":"+date.getMinutes();
+}
+
+export {Msg,likesAndVisits,borrarReceta,crearRecetaID,Datos,crearId,Users,buscarMisDatos,httpRequest,host};

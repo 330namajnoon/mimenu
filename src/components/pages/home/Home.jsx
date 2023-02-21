@@ -6,6 +6,7 @@ import Comidas from "./Comidas";
 import VistaDereceta from "./vistadereceta/VistaDereceta";
 import HomeContext from "../../../contexts/homeContext";
 import AppContext from "../../../contexts/app";
+import Comentarios from "../../comentarios/Comentarios";
 function Home({datos}) {
     const appContext = useContext(AppContext);
     const [recetaSeleccionada,setRecetaS] = useState(new Receta("a","a"));
@@ -14,7 +15,7 @@ function Home({datos}) {
     const sdiComidas = datos.recetas;
     const misComidas = datos.recetas;
     const comidasPublicadas = datos.recetas;
-
+    const [comentarios,setComentarios] = useState(false);
     function Receta(name,image) {
         this.perfil = {
             username: "Sina",
@@ -31,13 +32,26 @@ function Home({datos}) {
             likes: 5,
         }
     }
+
+    function buscarReceta(id) {
+        let receta;
+        datos.recetas.forEach(e => {
+            if(e.comida.id === id) receta = e;
+        });
+        return receta;
+    }
     
    
     return(
         <HomeContext.Provider value={{visitarReceta,recetaSeleccionada,setBuscar}}>
            
             <div    style={{height:`${appContext.height}px`}}  className="home-paszamine">
-
+                {comentarios && 
+                <Comentarios 
+                    setComentarios={visitarReceta}
+                    comentarios={buscarReceta(recetaSeleccionada.comida.id)}
+                />
+                }
                 {vistaR === true ? <VistaDereceta datos={recetaSeleccionada}/> : null}
                 <h1 className="menudehoy">Menu de hoy</h1>
                 <Serch buscar={buscar}/>
@@ -52,9 +66,10 @@ function Home({datos}) {
         </HomeContext.Provider>
     );
 
-    function visitarReceta(durum,data = {}) {
+    function visitarReceta(durum,data = {},comentarios = false) {
         setRecetaS(JSON.parse(JSON.stringify(data)));
         setVistaR(durum);
+        setComentarios(comentarios);
        
     }
 }

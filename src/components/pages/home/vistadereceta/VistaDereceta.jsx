@@ -45,17 +45,20 @@ function VistaDereceta({datos}) {
                         <h6>{datos.comida.likes.length}</h6>
                   
                     </div>
-                
-                    <span style={appContext.datos.like(datos.comida.id) ? {color:"rgb(255, 0, 149)"} : null} onClick={appContext.datos.like(datos.comida.id) === false ? (e)=>{
+                    <div className="c_l">
+                        <span onClick={()=> {visitarReceta(false,datos,true)}} id="comentarios" class="material-symbols-rounded">
+                            comment
+                        </span>
+                        <span style={appContext.datos.like(datos.comida.id) ? {color:"rgb(255, 0, 149)"} : null} onClick={appContext.datos.like(datos.comida.id) === false ? (e)=>{
 
-                        appContext.like(appContext.datos.mydata.id,datos.comida.id,"likes");
-                        console.log("salam")
+                            appContext.like(appContext.datos.mydata.id,datos.comida.id,"likes");
 
-                    } : null} id="like" class="material-symbols-rounded">
+                        } : null} id="like" class="material-symbols-rounded">
 
-                        favorite
+                            favorite
 
-                    </span>
+                        </span>
+                    </div>
                 </div>
         </div>
     );

@@ -185,6 +185,18 @@ function App() {
      
      
   }
+
+  function guardarComentario(msg,id) {
+      const formdata = new FormData();
+      formdata.append("msg",JSON.stringify(msg));
+      formdata.append("id",id);
+      axios.post(`${host}/guardar_comentario`,formdata).then((r)=> {
+          socket.emit("realizar_recetas");
+          setLoading(false);
+          const nuevosdatos = new Datos(datos.materiales,datos.mydata,r.data);
+          setDatos(nuevosdatos);
+      })
+  }
   useEffect(()=> {
   
       if(localStorage.getItem("userData") !== null) {
@@ -242,7 +254,7 @@ function App() {
 
  
   return (
-    <AppContext.Provider value={{setDatos,height,setPageLoad,guardarPerfil,guardarMisMateriales,borrarReceta,httpRequest,page,pageChenge,datos,like,guardarReceta,setLoading}} >
+    <AppContext.Provider value={{guardarComentario,setDatos,height,setPageLoad,guardarPerfil,guardarMisMateriales,borrarReceta,httpRequest,page,pageChenge,datos,like,guardarReceta,setLoading}} >
       <div  className="App">
         {loading ? 
           <img style={{top:`${((window.innerHeight/2)-((window.innerWidth/100)*40)/2)}px`}} className="loading_gif" src="./images/loading.gif" alt="" /> : null

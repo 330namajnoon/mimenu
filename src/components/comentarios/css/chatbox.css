@@ -1,0 +1,37 @@
+
+
+.chatbox_back {
+    width: 100%;
+    height: 40px;
+    background-color: rgba(240, 248, 255, 0.322);
+    position: fixed;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 -2px 3px rgb(14, 14, 82);
+}
+
+.chatbox_back input {
+    font-family: 'Itim', cursive;
+    width: 75%;
+    height: 90%;
+    background-color: transparent;
+    padding: 0 5vw 0 5vw;
+    border: 0;
+    box-shadow: inset 0 0 5px rgb(153, 0, 255);
+    margin-left: 1vw;
+    color: white;
+    font-size: 5vw;
+    outline: none;
+}
+
+.chatbox_back input::placeholder {
+    color: rgba(255, 255, 255, 0.671);
+}
+
+.chatbox_back span {
+    color: rgb(162, 81, 238);
+    margin-right: 3vw;
+    font-size: 8vw;
+}
