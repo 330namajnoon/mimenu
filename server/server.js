@@ -179,27 +179,8 @@ app.post("/guardar_receta",uploadD.none(),(req,res)=> {
         }
         fs.writeFile("./database/recetas.json",JSON.stringify(recetas),(err)=> {
             if(err) throw err;
-            fs.readFile("./database/materiales.json", (err, data) => {
-                if (err) throw err;
-                let materiales = JSON.parse(data.toString());
-                let newMateriales = buscarMateriales(receta.comida.materiales,materiales);
-                newMateriales.forEach(e => {
-                    let d = false;
-                    materiales.forEach(ee => {
-                        if (ee.name.toLowerCase() == e.name.toLowerCase()) d = true;
-                    })
-                    if (d == false) {
-                        let newmaterial = e;
-                        newmaterial.name = newmaterial.name.charAt(0).toUpperCase() + newmaterial.name.slice(1);
-                        newmaterial.id = materiales.length + 1;
-                        materiales.push(e);
-                    }
-                })
-                fs.writeFile("./database/materiales.json", JSON.stringify(materiales), (err) => {
-                    if (err) throw err;
-                    res.send(JSON.stringify(recetas));
-                })
-            })
+            
+            res.send(JSON.stringify(recetas));
         })
     })
 
@@ -241,27 +222,7 @@ app.post("/guardar_receta_I",imageUload().single('image'),(req,res)=> {
         }
         fs.writeFile("./database/recetas.json",JSON.stringify(recetas),(err)=> {
             if(err) throw err;
-            fs.readFile("./database/materiales.json", (err, data) => {
-                if (err) throw err;
-                let materiales = JSON.parse(data.toString());
-                let newMateriales = buscarMateriales(receta.comida.materiales,materiales);
-                newMateriales.forEach(e => {
-                    let d = false;
-                    materiales.forEach(ee => {
-                        if (ee.name.toLowerCase() == e.name.toLowerCase()) d = true;
-                    })
-                    if (d == false) {
-                        let newmaterial = e;
-                        newmaterial.name = newmaterial.name.charAt(0).toUpperCase() + newmaterial.name.slice(1);
-                        newmaterial.id = materiales.length + 1;
-                        materiales.push(e);
-                    }
-                })
-                fs.writeFile("./database/materiales.json", JSON.stringify(materiales), (err) => {
-                    if (err) throw err;
-                    res.send(JSON.stringify(recetas));
-                })
-            })
+            res.send(JSON.stringify(recetas));
             
         })
     })
@@ -433,28 +394,57 @@ app.get("/sigin",(req,res)=> {
 })
 
 app.post("/guardar_materiales",uploadD.none(),(req,res)=> {
-    fs.readFile("./database/materiales.json",(err,data)=> {
-        if(err) throw err;
+    fs.readFile("./database/materiales.json", (err, data) => {
+        if (err) throw err;
         let materiales = JSON.parse(data.toString());
-        let newMateriales  = JSON.parse(req.body.materiales);
+        let newMateriales = JSON.parse(req.body.newmaterial);
         newMateriales.forEach(e => {
             let d = false;
             materiales.forEach(ee => {
-                if(ee.name == e.name)  d = true;
+                if (ee.name === e.name && e.name.charAt(0).toUpperCase() + e.name.slice(1)) d = true;
             })
-            if(d == false ) {
+            if (d === false) {
                 e.id = materiales.length+1;
                 materiales.push(e);
-            }    
+            }
         })
-        fs.writeFile("./database/materiales.json",JSON.stringify(materiales),(err)=> {
+        fs.writeFile("./database/materiales.json", JSON.stringify(materiales), (err) => {
+            if (err) throw err;
+            res.send({materiales,newMateriales});
+        })
+    })
+})
+
+app.post("/realizar_recetas",uploadD.none(),(req,res)=> {
+    fs.readFile("./database/recetas.json",(err,data)=> {
+        if(err) throw err;
+        const recetas = JSON.parse(data.toString());
+
+        fs.readFile("./database/materiales.json",(err,data)=> {
             if(err) throw err;
+            const materiales = JSON.parse(data.toString());
+            res.send({recetas,materiales});
         })
-    })    
+    })
 })
 
 server.listen(port,()=> {
     console.log(`server is op un port ${port}!`);
 
     
+})
+
+
+
+
+io.on("connect",(client)=> {
+    console.log("new web connect");
+
+    client.on("realizar_recetas",()=> {
+        client.broadcast.emit("realizar_recetas");
+    })
+
+    client.on("disconnect",()=> {
+        console.log("new web disconnect");
+    })
 })

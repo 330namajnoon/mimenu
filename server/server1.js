@@ -94,6 +94,7 @@ const cors = require("cors");
 const app = express();
 const bodyParser = require('body-parser');
 
+
 app.use(bodyParser.json());
 // app.use("/node_modules",express.static(__dirname + "/node_modules"));
 // app.use(express.static(pdp));
@@ -399,19 +400,33 @@ app.post("/guardar_materiales", uploadD.none(), (req, res) => {
     fs.readFile("./database/materiales.json", (err, data) => {
         if (err) throw err;
         let materiales = JSON.parse(data.toString());
-        let newMateriales = JSON.parse(req.body.materiales);
+        let newMateriales = JSON.parse(req.body.newmaterial);
         newMateriales.forEach(e => {
             let d = false;
             materiales.forEach(ee => {
-                if (ee.name == e.name) d = true;
+                if (ee.name === e.name && e.name.charAt(0).toUpperCase() + e.name.slice(1)) d = true;
             })
-            if (d == false) {
-                e.id = materiales.length + 1;
+            if (d === false) {
+                e.id = materiales.length+1;
                 materiales.push(e);
             }
         })
         fs.writeFile("./database/materiales.json", JSON.stringify(materiales), (err) => {
             if (err) throw err;
+            res.send({materiales,newMateriales});
+        })
+    })
+})
+
+app.post("/realizar_recetas",uploadD.none(),(req,res)=> {
+    fs.readFile("./database/recetas.json",(err,data)=> {
+        if(err) throw err;
+        const recetas = JSON.parse(data.toString());
+
+        fs.readFile("./database/materiales.json",(err,data)=> {
+            if(err) throw err;
+            const materiales = JSON.parse(data.toString());
+            res.send({recetas,materiales});
         })
     })
 })
@@ -419,86 +434,19 @@ app.post("/guardar_materiales", uploadD.none(), (req, res) => {
 server.listen(port, () => {
     console.log(`server is op un port ${port}!`);
 
-    // fs.readFile("./database/recetas.json",(err,data)=> {
-
-    //     fs.readFile("./database/materiales.json",(err,mat)=>{
-    //         let materiales = JSON.parse(mat.toString());
-
-    //         let newMateriales  = [
-    //             { id: 1, name: "Papas" },
-    //             { id: 2, name: "Cebolla" },
-    //             { id: 3, name: "Huevos" },
-    //             { id: 4, name: "Aceite de oliva" },
-    //             { id: 5, name: "Sal" },
-    //             { id: 6, name: "Pimienta negra" }
-    //           ]
-    //         newMateriales.forEach(e => {
-    //             let d = false;
-    //             materiales.forEach(ee => {
-    //                 if(ee.name === e.name)  d = true;
-    //             })
-    //             if(d === false ) {
-    //                 e.id = materiales.length+1;
-    //                 materiales.push(e);
-    //             }    
-    //         })
-
-    //         fs.writeFile("./database/materiales.json",JSON.stringify(materiales),(err)=> {
-    //             function buscarm(mismtr) {
-    //                 let matriales = [];
-    //                 mismtr.forEach(e => {
-    //                     materiales.forEach(ee => {
-    //                         if(ee.name === e.name) matriales.push(ee.id);
-    //                     })
-    //                 });
-    //                 return matriales;
-    //             }
-    //             if(err) throw err;
-    //             let recetas = JSON.parse(data.toString());
-    //             let newreceta  = {
-    //                 perfil: {
-    //                   username: "Chef Luis",
-    //                   id: "13e5ds",
-    //                   image: "chef_luis.jpg"
-    //                 },
-    //                 comida: {
-    //                   id: "receta14",
-    //                   name: "Tortilla de Papas",
-    //                   materiales: buscarm([
-    //                     { id: 1, name: "Papas" },
-    //                     { id: 2, name: "Cebolla" },
-    //                     { id: 3, name: "Huevos" },
-    //                     { id: 4, name: "Aceite de oliva" },
-    //                     { id: 5, name: "Sal" },
-    //                     { id: 6, name: "Pimienta negra" }
-    //                   ]),
-    //                   receta: "Pele y corte las papas y la cebolla en rodajas finas. Caliente aceite de oliva en una sartén y fría las papas y la cebolla a fuego medio hasta que estén doradas y crujientes. Batir los huevos en un tazón y sazonarlos con sal y pimienta negra al gusto. Agregue las papas y la cebolla a los huevos y mezcle bien. Caliente un poco más de aceite de oliva en la sartén y agregue la mezcla de huevo. Cocine a fuego medio-bajo durante unos 10 minutos o hasta que la parte inferior esté dorada. Voltee la tortilla utilizando un plato y cocine la otra cara hasta que esté dorada. Sirva caliente.",
-    //                   image: "tortilla_papas.jpg",
-    //                   visits: [],
-    //                   likes: []
-    //                 }
-    //               }
-
-    //             recetas.push(newreceta);
-
-    //             fs.writeFile("./database/recetas.json",JSON.stringify(recetas),(err)=> {
-
-    //             })
-    //         })
-
-    //     })
-
-    // })    
+})
 
 
+/////// socket.io  ///////
 
-    //     fs.writeFile("./database/materiales.json",JSON.stringify(materiales),(err)=> {
+io.on("connect",(client)=> {
+    console.log("new web connect");
 
-    //     })
-    // })
+    client.on("realizar_recetas",()=> {
+        client.broadcast.emit("realizar_recetas");
+    })
 
-
-
-
-
+    client.on("disconnect",()=> {
+        console.log("new web disconnect");
+    })
 })
