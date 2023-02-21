@@ -393,7 +393,12 @@ app.post("/guardar_comentario",uploadD.none(),(req,res)=> {
 
         for (let index = 0; index < recetas.length; index++) {
             if(recetas[index].comida.id === id) {
-                recetas[index].comida.comentarios.push(msg);
+                let comentarios = [];
+                comentarios.push(msg);
+                recetas[index].comida.comentarios.forEach(e => {
+                    comentarios.push(e);
+                })
+                recetas[index].comida.comentarios = comentarios;
             }
             
         }

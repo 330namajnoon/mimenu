@@ -186,6 +186,32 @@ app.post("/guardar_receta",uploadD.none(),(req,res)=> {
 
 })
 
+app.post("/guardar_comentario",uploadD.none(),(req,res)=> {
+    const msg = JSON.parse(req.body.msg);
+    const id = req.body.id;
+
+    fs.readFile("./database/recetas.json",(err,data)=> {
+        if(err) throw err;
+        const recetas = JSON.parse(data.toString());
+
+        for (let index = 0; index < recetas.length; index++) {
+            if(recetas[index].comida.id === id) {
+                let comentarios = [];
+                comentarios.push(msg);
+                recetas[index].comida.comentarios.forEach(e => {
+                    comentarios.push(e);
+                })
+                recetas[index].comida.comentarios = comentarios;
+            }
+            
+        }
+
+        fs.writeFile("./database/recetas.json",JSON.stringify(recetas),(err)=> {
+            res.send(JSON.stringify(recetas));
+        })
+    })
+})
+
 app.post("/guardar_receta_I",imageUload().single('image'),(req,res)=> {
     
    
